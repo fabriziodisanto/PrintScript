@@ -1,4 +1,4 @@
-package lexer;
+package scanner.lexer;
 
 import errors.LexerError;
 import token.Token;

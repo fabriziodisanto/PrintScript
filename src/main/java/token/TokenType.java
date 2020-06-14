@@ -20,7 +20,6 @@ public enum TokenType {
     IDENTIFIER,
     STRING,
     NUMBER,
-    BOOLEAN,
     LET,
     CONST,
     IF,

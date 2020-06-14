@@ -1,11 +1,11 @@
 import errors.LexerError;
-import lexer.*;
+import scanner.lexer.*;
 import org.junit.Before;
 import org.junit.Test;
 import scanner.Scanner;
 import scanner.ScannerImpl;
 import token.Token;
-import token.TokenFactoryImpl;
+import token.factory.TokenFactoryImpl;
 import token.TokenType;
 
 import java.util.ArrayList;
@@ -181,23 +181,23 @@ public class ScannerTests {
         assertEquals(false, tokens.get(6).getValue().getValue());
     }
 
-    @Test(expected = LexerError.class)
-    public void test002_scanFailsWithInvalidSpecialChar() throws LexerError {
-        StringBuffer stringBuffer = new StringBuffer("@");
-        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
-        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
-        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
-        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
-
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
-
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
-        scanner.analyze().collect(Collectors.toList());
-    }
+//    @Test(expected = LexerError.class)
+//    public void test003_scanFailsWithInvalidSpecialChar() throws LexerError {
+//        StringBuffer stringBuffer = new StringBuffer("@");
+//        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+//        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+//        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+//        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+//
+//        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+//        lexersList.add(identifierAndKeywordsLexer);
+//        lexersList.add(numberLexer);
+//        lexersList.add(specialCharactersLexer);
+//        lexersList.add(stringLexer);
+//
+//        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+//        scanner.analyze().collect(Collectors.toList());
+//    }
 
     private void assertTokenType(List<Token> tokens, Map<Integer, TokenType> indexAndTokenTypeMap){
         for (Map.Entry<Integer,TokenType> entry : indexAndTokenTypeMap.entrySet())
@@ -214,8 +214,8 @@ public class ScannerTests {
 
 //    @Test
 //    public void test001_lexEmptySource(){
-//        SpecialCharactersLexer lexer = new SpecialCharactersLexer(new StringBuffer(" "), new TokenFactoryImpl(), keywords);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        SpecialCharactersLexer scanner.lexer = new SpecialCharactersLexer(new StringBuffer(" "), new TokenFactoryImpl(), keywords);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
 //
@@ -224,8 +224,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test002_lexStringSource(){
-//        Lexer lexer = new StringLexer(new StringBuffer("\"I am a String\""), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new StringLexer(new StringBuffer("\"I am a String\""), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.STRING);
 //        indexAndTokenTypeMap.put(1, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
@@ -241,8 +241,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test003_lexMultiStringSource(){
-//        Lexer lexer = new StringLexer(new StringBuffer("\"I am a String\"\n\"And I am another String\""), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new StringLexer(new StringBuffer("\"I am a String\"\n\"And I am another String\""), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.STRING);
 //        indexAndTokenTypeMap.put(1, TokenType.STRING);
 //        indexAndTokenTypeMap.put(2, TokenType.EOF);
@@ -262,8 +262,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test00X_lexMultiLineStringSource(){
-//        Lexer lexer = new StringLexer(new StringBuffer("\"I am a\nMultiLineString\""), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new StringLexer(new StringBuffer("\"I am a\nMultiLineString\""), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.STRING);
 //        indexAndTokenTypeMap.put(1, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
@@ -278,8 +278,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test00X_lexMultiMultiLineStringSource(){
-//        Lexer lexer = new StringLexer(new StringBuffer("\"I am a\nMultiLineString\" \"And i am another\nstring\""), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new StringLexer(new StringBuffer("\"I am a\nMultiLineString\" \"And i am another\nstring\""), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.STRING);
 //        indexAndTokenTypeMap.put(1, TokenType.STRING);
 //        indexAndTokenTypeMap.put(2, TokenType.EOF);
@@ -299,8 +299,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test004_lexIntegerNumberSource(){
-//        Lexer lexer = new NumberLexer(new StringBuffer("23"), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new NumberLexer(new StringBuffer("23"), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.NUMBER);
 //        indexAndTokenTypeMap.put(1, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
@@ -313,8 +313,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test004_lexDecimalNumberSource(){
-//        Lexer lexer = new NumberLexer(new StringBuffer("23.7"), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new NumberLexer(new StringBuffer("23.7"), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.NUMBER);
 //        indexAndTokenTypeMap.put(1, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
@@ -327,8 +327,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test005_lexDecimalNumberDotAnotherNumberSource(){
-//        Lexer lexer = new NumberLexer(new StringBuffer("23.7.1998"), new TokenFactoryImpl());
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new NumberLexer(new StringBuffer("23.7.1998"), new TokenFactoryImpl());
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.NUMBER);
 //        indexAndTokenTypeMap.put(1, TokenType.DOT);
 //        indexAndTokenTypeMap.put(2, TokenType.NUMBER);
@@ -344,8 +344,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test006_lexKeywordsSource(){
-//        Lexer lexer = new IdentifierAndKeywordsLexer(new StringBuffer("const import let println"), new TokenFactoryImpl(), keywords);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new IdentifierAndKeywordsLexer(new StringBuffer("const import let println"), new TokenFactoryImpl(), keywords);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.CONST);
 //        indexAndTokenTypeMap.put(1, TokenType.IMPORT);
 //        indexAndTokenTypeMap.put(2, TokenType.LET);
@@ -358,8 +358,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test00X_lexBooleanWordsSource(){
-//        Lexer lexer = new BooleanLexer(new StringBuffer("else false if true"), new TokenFactoryImpl(), booleanWords);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new BooleanLexer(new StringBuffer("else false if true"), new TokenFactoryImpl(), booleanWords);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.ELSE);
 //        indexAndTokenTypeMap.put(1, TokenType.FALSE);
 //        indexAndTokenTypeMap.put(2, TokenType.IF);
@@ -375,8 +375,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test007_lexIdentifierSource(){
-//        Lexer lexer = new IdentifierAndKeywordsLexer(new StringBuffer("identifier"), new TokenFactoryImpl(), keywords);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new IdentifierAndKeywordsLexer(new StringBuffer("identifier"), new TokenFactoryImpl(), keywords);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.IDENTIFIER);
 //        indexAndTokenTypeMap.put(1, TokenType.EOF);
 //        assertTokenType(tokens, indexAndTokenTypeMap);
@@ -386,8 +386,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test008_lexMultiIdentifierSource(){
-//        Lexer lexer = new IdentifierAndKeywordsLexer(new StringBuffer("identifier1 identifier_2"), new TokenFactoryImpl(), keywords);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new IdentifierAndKeywordsLexer(new StringBuffer("identifier1 identifier_2"), new TokenFactoryImpl(), keywords);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.IDENTIFIER);
 //        indexAndTokenTypeMap.put(1, TokenType.IDENTIFIER);
 //        indexAndTokenTypeMap.put(2, TokenType.EOF);
@@ -398,8 +398,8 @@ public class ScannerTests {
 //
 //    @Test
 //    public void test009_lexOtherTokensSource(){
-//        Lexer lexer = new SpecialCharactersLexer(new StringBuffer("{}().-+;*/=:< > <= >="), new TokenFactoryImpl(), specialChars);
-//        List<Token> tokens = lexer.analyze().collect(Collectors.toList());
+//        Lexer scanner.lexer = new SpecialCharactersLexer(new StringBuffer("{}().-+;*/=:< > <= >="), new TokenFactoryImpl(), specialChars);
+//        List<Token> tokens = scanner.lexer.analyze().collect(Collectors.toList());
 //        indexAndTokenTypeMap.put(0, TokenType.LEFT_BRACE);
 //        indexAndTokenTypeMap.put(1, TokenType.RIGHT_BRACE);
 //        indexAndTokenTypeMap.put(2, TokenType.LEFT_PAREN);

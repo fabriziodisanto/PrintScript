@@ -1,9 +1,9 @@
-package lexer;
+package scanner.lexer;
 
 import data.StringValue;
 import errors.LexerError;
 import token.Token;
-import token.TokenFactory;
+import token.factory.TokenFactory;
 
 import static token.TokenType.*;
 
@@ -16,6 +16,7 @@ public class StringLexer extends AbstractLexer{
         super.colPositionStart = 0;
         super.colPositionEnd = 0;
         super.tokenFactory = tokenFactory;
+        super.lexerType = LexerType.SPECIAL_CHAR;
     }
 
     public Token scanToken() throws LexerError {

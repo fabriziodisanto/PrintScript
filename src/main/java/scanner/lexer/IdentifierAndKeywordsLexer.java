@@ -1,8 +1,8 @@
-package lexer;
+package scanner.lexer;
 
 import errors.LexerError;
 import token.Token;
-import token.TokenFactory;
+import token.factory.TokenFactory;
 import token.TokenType;
 
 import java.util.Map;
@@ -22,6 +22,7 @@ public class IdentifierAndKeywordsLexer extends AbstractLexer{
         super.colPositionEnd = 0;
         super.tokenFactory = tokenFactory;
         this.keywordsMap = keywordsMap;
+        super.lexerType = LexerType.ALPHA;
     }
 
     public Token scanToken() throws LexerError {

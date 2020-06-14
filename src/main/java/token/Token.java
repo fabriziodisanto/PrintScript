@@ -9,7 +9,7 @@ public class Token {
     private int colPositionStart;
     private int colPositionEnd;
 
-    Token(TokenType type, DataTypeValue value, int lineNumber, int colPositionStart, int colPositionEnd) {
+    public Token(TokenType type, DataTypeValue value, int lineNumber, int colPositionStart, int colPositionEnd) {
         this.type = type;
         this.value = value;
         this.lineNumber = lineNumber;

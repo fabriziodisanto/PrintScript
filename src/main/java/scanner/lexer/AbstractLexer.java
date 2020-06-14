@@ -1,11 +1,8 @@
-package lexer;
+package scanner.lexer;
 
 import errors.LexerError;
 import token.Token;
-import token.TokenFactory;
-import token.TokenType;
-
-import java.util.Map;
+import token.factory.TokenFactory;
 
 
 public abstract class AbstractLexer implements Lexer {
@@ -16,6 +13,7 @@ public abstract class AbstractLexer implements Lexer {
     int colPositionStart;
     int colPositionEnd;
     TokenFactory tokenFactory;
+    LexerType lexerType;
 
     Boolean isEndOfSource() {
         return codeSource == null || currentPosition >= codeSource.length();
@@ -86,5 +84,9 @@ public abstract class AbstractLexer implements Lexer {
         positions[1] = this.currentPosition;
         positions[2] = this.colPositionEnd;
         return positions;
+    }
+
+    public LexerType getLexerType() {
+        return lexerType;
     }
 }
