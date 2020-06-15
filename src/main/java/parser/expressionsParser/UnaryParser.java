@@ -1,39 +1,35 @@
 package parser.expressionsParser;
 
-import errors.ParserError;
 import expressions.Expression;
-import expressions.factory.ExpressionFactory;
+import expressions.factory.UnaryExpressionFactory;
+import expressions.helper.TokenExpression;
 import token.Token;
 import token.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
-import static token.TokenType.MINUS;
-import static token.TokenType.PLUS;
+import static token.TokenType.*;
 
-public class UnaryParser extends OpRightParser {
+public class UnaryParser extends ExpressionParser {
 
-    public UnaryParser(Stream<Token> tokenStream, ExpressionFactory expressionFactory, Expression nextExpression) {
-        super(tokenStream, expressionFactory, nextExpression);
+    public UnaryParser() {
+        super(ExpressionType.OPERATOR_RIGHT);
     }
 
     @Override
-    List<TokenType> getTokensToMatch() {
-        ArrayList<TokenType> tokensToMatch = new ArrayList<>();
-        tokensToMatch.add(MINUS);
-        return tokensToMatch;
+    public List<TokenType> getTokensToMatch() {
+        return addAll(new ArrayList<>(), MINUS);
     }
 
     @Override
-    Expression parse() throws ParserError {
-        if (match(tokensToMatch)) {
-            Token operator = previous();
-            Expression right = unary();
-            return expressionFactory.buildUnaryExpression(operator, right);
-        }
+    public TokenExpression parse(List<Token> tokenList){
+        return parseLeftOpRight(tokenList);
+    }
 
-        return primary();
+
+    @Override
+    public Expression build(Expression left, Token operator, Expression right) {
+        return UnaryExpressionFactory.buildUnaryExpression(operator, right);
     }
 }

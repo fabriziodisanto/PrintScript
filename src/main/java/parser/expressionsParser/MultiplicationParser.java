@@ -1,41 +1,34 @@
 package parser.expressionsParser;
 
-import errors.ParserError;
 import expressions.Expression;
-import expressions.factory.ExpressionFactory;
+import expressions.factory.BinaryExpressionFactory;
+import expressions.helper.TokenExpression;
 import token.Token;
 import token.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static token.TokenType.*;
 
-public class MultiplicationParser extends LeftOpRightParser{
+public class MultiplicationParser extends ExpressionParser{
 
-    public MultiplicationParser(Stream<Token> tokenStream, ExpressionFactory expressionFactory, Expression nextExpression) {
-        super(tokenStream, expressionFactory, nextExpression);
+    public MultiplicationParser() {
+        super(ExpressionType.LEFT_OPERATOR_RIGHT);
     }
 
     @Override
-    List<TokenType> getTokensToMatch() {
-        ArrayList<TokenType> tokensToMatch = new ArrayList<>();
-        tokensToMatch.add(SLASH);
-        tokensToMatch.add(STAR);
-        return tokensToMatch;
+    public List<TokenType> getTokensToMatch() {
+        return addAll(new ArrayList<>(), SLASH, STAR);
     }
 
     @Override
-    Expression parse() throws ParserError {
-        Expression expression = unary();
+    public TokenExpression parse(List<Token> tokenList){
+        return parseLeftOpRight(tokenList);
+    }
 
-        while (match(tokensToMatch)) {
-            Token operator = previous();
-            Expression right = unary();
-            expression = expressionFactory.buildBinaryExpression(expression, operator, right);
-        }
-
-        return expression;
+    @Override
+    public Expression build(Expression left, Token operator, Expression right) {
+        return BinaryExpressionFactory.buildBinaryExpression(left, operator, right);
     }
 }

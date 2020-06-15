@@ -1,6 +1,7 @@
 package expressions;
 
 import data.DataTypeValue;
+import errors.InterpreterError;
 
 public class GroupExpression extends Expression {
 
@@ -11,7 +12,7 @@ public class GroupExpression extends Expression {
     }
 
     @Override
-    public <T> DataTypeValue accept(ExpressionVisitor<T> visitor) {
+    public <T> DataTypeValue accept(ExpressionVisitor<T> visitor) throws InterpreterError {
         return visitor.visitGroupExpression(this);
     }
 

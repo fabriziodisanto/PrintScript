@@ -2,101 +2,55 @@ package parser.expressionsParser;
 
 import errors.ParserError;
 import expressions.Expression;
-import expressions.factory.ExpressionFactory;
+import expressions.helper.TokenExpression;
 import token.Token;
 import token.TokenType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static token.TokenType.*;
-import static token.TokenType.RIGHT_PAREN;
 
 public abstract class ExpressionParser {
 
-    Expression nextExpression;
-    List<TokenType> tokensToMatch;
-    ExpressionFactory expressionFactory;
-    int currentPosition = 0;
-    Stream<Token> tokenStream;
+    private List<TokenType> tokensToMatch;
+    private ExpressionType expressionType;
 
-    public ExpressionParser(Stream<Token> tokenStream, ExpressionFactory expressionFactory, Expression nextExpression) {
+    public ExpressionParser(ExpressionType expressionType) {
         this.tokensToMatch = getTokensToMatch();
+        this.expressionType = expressionType;
     }
 
-    abstract Expression parse() throws ParserError;
+    public abstract TokenExpression parse(List<Token> tokens) throws ParserError;
 
-    abstract List<TokenType> getTokensToMatch();
-
-    boolean match(List<TokenType> types) {
-        for (TokenType type : types) {
-            if (check(type)) {
-                advance();
-                return true;
-            }
+    TokenExpression parseLeftOpRight(List<Token> tokenList){
+        List<Token> left = new ArrayList<>();
+        int i = 0;
+        Token token = tokenList.get(i);
+        while(!tokensToMatch.contains(token)){
+            left.add(token);
+            token = tokenList.get(++i);
         }
-        return false;
+        Token operator = token;
+        List<Token> right = tokenList.subList(++i, tokenList.size());
+        return new TokenExpression(left, operator, right);
     }
 
-    boolean match(TokenType type) {
-        if (check(type)) {
-            advance();
-            return true;
-        }
-        return false;
+    TokenExpression parseOpRight(List<Token> tokenList){
+        Token operator = tokenList.get(0);
+        List<Token> right = tokenList.subList(1, tokenList.size());
+        return new TokenExpression(null, operator, right);
     }
 
-    boolean check(TokenType type) {
-        if (isAtEnd()) return false;
-        return peek().getType() == type;
+    public abstract List<TokenType> getTokensToMatch();
+
+    public abstract Expression build(Expression left, Token operator, Expression right);
+
+    public ExpressionType getExpressionType() {
+        return expressionType;
     }
 
-    Token advance() {
-        if (!isAtEnd()) currentPosition++;
-        return previous();
+    ArrayList<TokenType> addAll(ArrayList<TokenType> tokenTypeList, TokenType ... types){
+        tokenTypeList.addAll(Arrays.asList(types));
+        return tokenTypeList;
     }
-
-    boolean isAtEnd() {
-        return peek().getType() == EOF;
-    }
-
-    Token peek() {
-        return getTokenOnThisPosition(currentPosition);
-    }
-
-    Token previous() {
-        return getTokenOnThisPosition(currentPosition - 1);
-    }
-
-    Token getTokenOnThisPosition(int i) {
-        List<Token> tokenList = tokenStream.collect(Collectors.toList());
-        tokenStream = tokenList.stream();
-        return tokenList.get(i);
-    }
-
-
-    //    todo hacerlo bien
-//    Expression expression() throws ParserError {
-////        return assigment();
-//        return comparison();
-//    }
-
-
-//    private void synchronize() {
-//        advance();
-//
-//        while (!isAtEnd()) {
-//            if (previous().getType() == SEMICOLON) return;
-//            switch (peek().getType()) {
-//                case IF:
-//                case PRINTLN:
-//                case IMPORT:
-//                    return;
-//            }
-//
-//            advance();
-//        }
-//    }
-
 }

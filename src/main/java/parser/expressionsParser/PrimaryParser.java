@@ -1,56 +1,36 @@
 package parser.expressionsParser;
 
-import errors.ParserError;
 import expressions.Expression;
-import expressions.factory.ExpressionFactory;
+import expressions.factory.LiteralExpressionFactory;
+import expressions.helper.TokenExpression;
 import token.Token;
 import token.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static token.TokenType.*;
 
-public class PrimaryParser extends LeftOpRightParser{
+public class PrimaryParser extends ExpressionParser{
 
-    public PrimaryParser(Stream<Token> tokenStream, ExpressionFactory expressionFactory, Expression nextExpression) {
-        super(tokenStream, expressionFactory, nextExpression);
+    public PrimaryParser() {
+        super(ExpressionType.OPERATOR);
     }
 
     @Override
-    List<TokenType> getTokensToMatch() {
-        ArrayList<TokenType> tokensToMatch = new ArrayList<>();
-        tokensToMatch.add(NUMBER);
-        tokensToMatch.add(STRING);
-        tokensToMatch.add(FALSE);
-        tokensToMatch.add(TRUE);
-        return tokensToMatch;
+    public List<TokenType> getTokensToMatch() {
+        return addAll(new ArrayList<>(), NUMBER, STRING, FALSE, TRUE);
     }
 
     @Override
-    Expression parse() throws ParserError {
-        if (match(tokensToMatch)) {
-            return expressionFactory.buildLiteralExpression(previous().getValue());
-        }
-        if (match(LEFT_PAREN)) {
-            Expression expression = expression();
-            try {
-                consume(RIGHT_PAREN);
-            } catch (ParserError parserError) {
-                System.out.println(parserError.getMessage());
-//                todo mmhmh queremos exitear?
-                System.exit(1);
-            }
-            return expressionFactory.buildGroupExpression(expression);
-        }
-        Token previousToken = peek();
-        throw new ParserError(previousToken.getLineNumber(), previousToken.getColPositionStart(), previousToken.getColPositionEnd(), "expression");
+    public TokenExpression parse(List<Token> tokenList){
+        return new TokenExpression(null, tokenList.get(0), null);
     }
 
-    Token consume(TokenType type) throws ParserError {
-        if (check(type)) return advance();
-        Token tokenError = peek();
-        throw new ParserError(tokenError.getLineNumber(), tokenError.getColPositionStart(), tokenError.getColPositionEnd(), tokenError.getType().toString());
+
+    //    todo mhmh
+    @Override
+    public Expression build(Expression left, Token operator, Expression right) {
+        return LiteralExpressionFactory.buildLiteralExpression(operator.getValue());
     }
 }

@@ -1,6 +1,7 @@
 package expressions;
 
 import data.DataTypeValue;
+import errors.InterpreterError;
 import token.Token;
 
 public class BinaryExpression extends Expression{
@@ -16,7 +17,7 @@ public class BinaryExpression extends Expression{
     }
 
     @Override
-    public <T> DataTypeValue accept(ExpressionVisitor<T> visitor) {
+    public <T> DataTypeValue accept(ExpressionVisitor<T> visitor) throws InterpreterError {
         return visitor.visitBinaryExpression(this);
     }
 

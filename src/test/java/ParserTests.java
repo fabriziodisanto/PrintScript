@@ -1,10 +1,10 @@
 import errors.LexerError;
 import expressions.Expression;
-import expressions.factory.ExpressionFactoryImpl;
+import parser.ParserImpl;
+import parser.expressionsParser.*;
 import scanner.lexer.*;
 import org.junit.Before;
 import org.junit.Test;
-import parser.ParserImpl;
 import scanner.Scanner;
 import scanner.ScannerImpl;
 import token.Token;
@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertEquals;
 
 public class ParserTests {
 
@@ -65,6 +63,24 @@ public class ParserTests {
         return booleanWords;
     }
 
+    private Map<Integer, ExpressionParser> expressionParserMap = getExpressionParserMap();
+    private Map<Integer, ExpressionParser> getExpressionParserMap() {
+        HashMap<Integer, ExpressionParser> expressionsParserMap = new HashMap<>();
+        expressionsParserMap.put(0, new GroupingParser());
+        expressionsParserMap.put(1, new ComparisonParser());
+        expressionsParserMap.put(2, new AdditionParser());
+        expressionsParserMap.put(3, new MultiplicationParser());
+        expressionsParserMap.put(4, new UnaryParser());
+        expressionsParserMap.put(5, new PrimaryParser());
+        return expressionsParserMap;
+
+//        expression → assignment ; assignment → IDENTIFIER "=" assigment | comparison ;
+//comparison → addition ( ( ">" | ">=" | "<" | "<=" ) addition )* ;
+//addition → multiplication ( ( "-" | "+" ) multiplication )* ;
+//multiplication → unary ( ( "/" | "*" ) unary )* ;
+//unary  → ( "-" ) unary | primary ;
+//primary  → NUMBER | STRING | "false" | "true" | "nil?" | "(" expression ")" | IDENTIFIER ;
+    }
 
     @Before
     public void setUpTests(){
@@ -92,8 +108,8 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-//        ParserImpl parser = new ParserImpl(new ExpressionFactoryImpl(), tokens);
-//        Expression expression = parser.parse();
-//        System.out.println("hola");
+        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
+        Stream<Expression> expressions = parser.analyze();
+        System.out.println("hola");
     }
 }
