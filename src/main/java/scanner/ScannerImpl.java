@@ -7,7 +7,7 @@ import token.Token;
 import token.factory.TokenFactory;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static token.TokenType.EOF;
@@ -23,17 +23,18 @@ public class ScannerImpl implements Scanner {
     private int colPositionEnd = 0;
     private Stream<Token> tokenList;
     private TokenFactory tokenFactory;
-    private List<AbstractLexer> lexerList;
+    private  Map<Integer, AbstractLexer> lexerPrecedenceMap;
+    private LexerProvider provider;
 
 //    todo, hacer que el code source venga del metodo de leer desde el filename
-    public ScannerImpl(String fileName, StringBuffer codeSource, List<AbstractLexer> lexerList, TokenFactory tokenFactory) {
+    public ScannerImpl(String fileName, StringBuffer codeSource, Map<Integer, AbstractLexer> lexerPrecedenceMap,
+                       TokenFactory tokenFactory, LexerProvider provider) {
         this.fileName = fileName;
         this.codeSource = codeSource;
         this.tokenList = new ArrayList<Token>().stream();
-//        TODO importante, boolean scanner.lexer antes que el keyword, sino los convierte en identifiers,
-//         maybe map con precedence como en expressions
-        this.lexerList = lexerList;
+        this.lexerPrecedenceMap = lexerPrecedenceMap;
         this.tokenFactory = tokenFactory;
+        this.provider = provider;
     }
 
     private Boolean isEndOfSource() {
@@ -61,15 +62,16 @@ public class ScannerImpl implements Scanner {
     }
 
     private Token scanToken() throws LexerError {
-        Token token = null;
         LexerType lexerType = null;
         while(lexerType == null) lexerType = getNextCharLexerType(checkNextChar());
-        for (AbstractLexer lexer : filterByLexerType(lexerType)) {
+        for (AbstractLexer lexer : provider.get(lexerType).values()) {
             try {
-                token = lexer.scanToken();
+                Token token = lexer.scanToken();
                 setAllLexersPositions(lexer.getAllPositions());
                 return token;
-            } catch (LexerError ignored) { }
+            } catch (LexerError ignored) {
+
+            }
         }
         throw new LexerError(fileName, lineNumber, colPositionStart, currentPosition);
     }
@@ -79,15 +81,9 @@ public class ScannerImpl implements Scanner {
         this.currentPosition = positions[1];
         this.colPositionStart = positions[2];
         this.colPositionEnd = positions[2];
-        for (AbstractLexer lexer : lexerList) {
+        for (AbstractLexer lexer : lexerPrecedenceMap.values()) {
             lexer.setAllPositions(lineNumber, currentPosition, colPositionEnd);
         }
-    }
-
-    private List<AbstractLexer> filterByLexerType(LexerType lexerType){
-        List<AbstractLexer> filteredLexers = new ArrayList<>();
-        lexerList.forEach((lexer) -> {if(lexer.getLexerType() == lexerType) filteredLexers.add(lexer);});
-        return filteredLexers;
     }
 
     private char checkNextChar(){

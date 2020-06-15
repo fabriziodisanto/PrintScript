@@ -7,6 +7,7 @@ import interpreter.InterpreterImpl;
 import parser.ParserImpl;
 import parser.expressionsParser.*;
 import parser.expressionsParser.types.*;
+import scanner.LexerProvider;
 import scanner.lexer.*;
 import org.junit.Test;
 import scanner.Scanner;
@@ -15,7 +16,6 @@ import token.Token;
 import token.factory.TokenFactoryImpl;
 import token.TokenType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,14 +89,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
@@ -116,14 +116,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
@@ -150,14 +150,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
@@ -179,14 +179,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
@@ -208,14 +208,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
@@ -237,14 +237,14 @@ public class InterpreterTests {
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
-        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-        lexersList.add(booleanLexer);
-        lexersList.add(identifierAndKeywordsLexer);
-        lexersList.add(numberLexer);
-        lexersList.add(specialCharactersLexer);
-        lexersList.add(stringLexer);
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);

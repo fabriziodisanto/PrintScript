@@ -10,28 +10,12 @@ import interpreter.binaryInterpreter.*;
 import token.Token;
 import token.TokenType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class InterpreterImpl implements Interpreter {
 
-    private Map<TokenType, BinaryExpressionInterpreter> binaryExpressionInterpreterMap;
+    private BinaryExpressionsInterpretersProvider provider;
 
     public InterpreterImpl() {
-        this.binaryExpressionInterpreterMap = getBinaryExpressionInterpreterMap();
-    }
-
-    private Map<TokenType, BinaryExpressionInterpreter> getBinaryExpressionInterpreterMap() {
-        HashMap<TokenType, BinaryExpressionInterpreter> binaryExpressionInterpreterMap = new HashMap<>();
-        binaryExpressionInterpreterMap.put(TokenType.MINUS, new SubstractInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.SLASH, new DivideInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.STAR, new MultiplyInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.PLUS, new SumInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.GREATER, new GreaterInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.GREATER_EQUAL, new GreaterEqualInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.LESS, new LessInterpreter());
-        binaryExpressionInterpreterMap.put(TokenType.LESS_EQUAL, new LessEqualInterpreter());
-        return binaryExpressionInterpreterMap;
+        this.provider = new BinaryExpressionsInterpretersProvider();
     }
 
     @Override
@@ -39,7 +23,7 @@ public class InterpreterImpl implements Interpreter {
         DataTypeValue left = evaluate(expression.getLeftExpression());
         DataTypeValue right = evaluate(expression.getRightExpression());
         Token operator = expression.getOperator();
-        BinaryExpressionInterpreter binaryExpressionInterpreter = binaryExpressionInterpreterMap.get(operator.getType());
+        BinaryExpressionInterpreter binaryExpressionInterpreter = provider.get(operator.getType());
         if (binaryExpressionInterpreter == null) throw new InterpreterError("Operation " + operator.getType().toString()
                 + " not supported in line " + operator.getType() + " column from " + operator.getColPositionStart()
                 + " to " + operator.getColPositionEnd());
