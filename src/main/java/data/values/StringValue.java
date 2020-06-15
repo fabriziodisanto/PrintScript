@@ -1,4 +1,6 @@
-package data;
+package data.values;
+
+import data.types.StringType;
 
 public class StringValue<T extends String> implements DataTypeValue {
 

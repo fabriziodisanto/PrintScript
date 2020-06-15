@@ -1,6 +1,8 @@
-package expressions;
+package expressions.types;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
+import expressions.Expression;
+import expressions.ExpressionVisitor;
 import token.Token;
 
 public class VariableExpression extends Expression {

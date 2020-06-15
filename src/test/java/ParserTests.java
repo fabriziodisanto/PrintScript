@@ -3,6 +3,7 @@ import errors.ParserError;
 import expressions.Expression;
 import parser.ParserImpl;
 import parser.expressionsParser.*;
+import parser.expressionsParser.types.*;
 import scanner.lexer.*;
 import org.junit.Test;
 import scanner.Scanner;

@@ -1,7 +1,7 @@
 package expressions.factory;
 
 import expressions.Expression;
-import expressions.UnaryExpression;
+import expressions.types.UnaryExpression;
 import token.Token;
 
 public class UnaryExpressionFactory {

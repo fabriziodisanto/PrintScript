@@ -1,4 +1,6 @@
-package data;
+package data.values;
+
+import data.types.BooleanType;
 
 public class BooleanValue<T extends Boolean> implements DataTypeValue {
 

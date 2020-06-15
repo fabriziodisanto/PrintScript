@@ -1,4 +1,6 @@
-package data;
+package data.values;
+
+import data.types.NumberType;
 
 public class NumberValue<T extends Double> implements DataTypeValue {
 

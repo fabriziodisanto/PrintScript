@@ -1,7 +1,9 @@
-package expressions;
+package expressions.types;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 import errors.InterpreterError;
+import expressions.Expression;
+import expressions.ExpressionVisitor;
 
 public class GroupExpression extends Expression {
 

@@ -2,7 +2,7 @@ package parser.expressionsParser;
 
 import errors.ParserError;
 import expressions.Expression;
-import expressions.helper.TokenExpression;
+import expressions.types.TokenExpression;
 import token.Token;
 import token.TokenType;
 
@@ -13,16 +13,16 @@ import java.util.List;
 public abstract class ExpressionParser {
 
     private List<TokenType> tokensToMatch;
-    private ExpressionType expressionType;
+    private ExpressionParserForm expressionParserForm;
 
-    public ExpressionParser(ExpressionType expressionType) {
+    public ExpressionParser(ExpressionParserForm expressionParserForm) {
         this.tokensToMatch = getTokensToMatch();
-        this.expressionType = expressionType;
+        this.expressionParserForm = expressionParserForm;
     }
 
     public abstract TokenExpression parse(List<Token> tokens) throws ParserError;
 
-    TokenExpression parseLeftOpRight(List<Token> tokenList) throws ParserError {
+    public TokenExpression parseLeftOpRight(List<Token> tokenList) throws ParserError {
         List<Token> left = new ArrayList<>();
         int i = 0;
         Token token = tokenList.get(i);
@@ -59,11 +59,11 @@ public abstract class ExpressionParser {
 
     public abstract Expression build(Expression left, Token operator, Expression right);
 
-    public ExpressionType getExpressionType() {
-        return expressionType;
+    public ExpressionParserForm getExpressionParserForm() {
+        return expressionParserForm;
     }
 
-    ArrayList<TokenType> addAll(ArrayList<TokenType> tokenTypeList, TokenType ... types){
+    public ArrayList<TokenType> addAll(ArrayList<TokenType> tokenTypeList, TokenType ... types){
         tokenTypeList.addAll(Arrays.asList(types));
         return tokenTypeList;
     }

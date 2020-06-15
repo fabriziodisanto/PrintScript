@@ -1,9 +1,11 @@
-package parser.expressionsParser;
+package parser.expressionsParser.types;
 
 import errors.ParserError;
 import expressions.Expression;
-import expressions.factory.BinaryExpressionFactory;
-import expressions.helper.TokenExpression;
+import expressions.factory.UnaryExpressionFactory;
+import expressions.types.TokenExpression;
+import parser.expressionsParser.ExpressionParser;
+import parser.expressionsParser.ExpressionParserForm;
 import token.Token;
 import token.TokenType;
 
@@ -12,15 +14,15 @@ import java.util.List;
 
 import static token.TokenType.*;
 
-public class ComparisonParser extends ExpressionParser{
+public class UnaryParser extends ExpressionParser {
 
-    public ComparisonParser() {
-        super(ExpressionType.LEFT_OPERATOR_RIGHT);
+    public UnaryParser() {
+        super(ExpressionParserForm.OPERATOR_RIGHT);
     }
 
     @Override
     public List<TokenType> getTokensToMatch() {
-        return addAll(new ArrayList<>(), GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
+        return addAll(new ArrayList<>(), MINUS);
     }
 
     @Override
@@ -30,6 +32,6 @@ public class ComparisonParser extends ExpressionParser{
 
     @Override
     public Expression build(Expression left, Token operator, Expression right) {
-        return BinaryExpressionFactory.buildBinaryExpression(left, operator, right);
+        return UnaryExpressionFactory.buildUnaryExpression(operator, right);
     }
 }

@@ -1,6 +1,6 @@
 package expressions;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 import errors.InterpreterError;
 
 public abstract class Expression {

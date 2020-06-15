@@ -1,7 +1,7 @@
 package expressions.factory;
 
-import data.DataTypeValue;
-import expressions.LiteralExpression;
+import data.values.DataTypeValue;
+import expressions.types.LiteralExpression;
 
 public class LiteralExpressionFactory {
 

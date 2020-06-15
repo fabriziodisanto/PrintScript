@@ -1,6 +1,6 @@
 package scanner.lexer;
 
-import data.BooleanValue;
+import data.values.BooleanValue;
 import errors.LexerError;
 import token.Token;
 import token.factory.TokenFactory;

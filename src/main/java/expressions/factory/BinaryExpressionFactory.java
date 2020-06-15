@@ -1,6 +1,6 @@
 package expressions.factory;
 
-import expressions.BinaryExpression;
+import expressions.types.BinaryExpression;
 import expressions.Expression;
 import token.Token;
 

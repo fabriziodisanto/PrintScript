@@ -1,8 +1,14 @@
 package interpreter;
 
-import data.*;
+import data.types.NumberType;
+import data.types.StringType;
+import data.values.BooleanValue;
+import data.values.DataTypeValue;
+import data.values.NumberValue;
+import data.values.StringValue;
 import errors.InterpreterError;
 import expressions.*;
+import expressions.types.*;
 import token.Token;
 import token.TokenType;
 

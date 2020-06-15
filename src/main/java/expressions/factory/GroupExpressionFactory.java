@@ -1,7 +1,7 @@
 package expressions.factory;
 
 import expressions.Expression;
-import expressions.GroupExpression;
+import expressions.types.GroupExpression;
 
 public class GroupExpressionFactory {
     static public GroupExpression buildGroupExpression(Expression expression) {

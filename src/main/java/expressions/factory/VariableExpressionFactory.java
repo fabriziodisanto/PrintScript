@@ -1,6 +1,6 @@
 package expressions.factory;
 
-import expressions.VariableExpression;
+import expressions.types.VariableExpression;
 import token.Token;
 
 public class VariableExpressionFactory {

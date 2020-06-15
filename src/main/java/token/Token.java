@@ -1,6 +1,6 @@
 package token;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 
 public class Token {
     private TokenType type;

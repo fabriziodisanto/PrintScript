@@ -1,6 +1,6 @@
 package token.factory;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 import token.Token;
 import token.TokenType;
 

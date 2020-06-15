@@ -1,28 +1,24 @@
-package expressions;
+package expressions.types;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 import errors.InterpreterError;
+import expressions.Expression;
+import expressions.ExpressionVisitor;
 import token.Token;
 
-public class BinaryExpression extends Expression{
+public class UnaryExpression extends Expression {
 
-    private Expression leftExpression;
     private Token operator;
     private Expression rightExpression;
 
-    public BinaryExpression(Expression leftExpression, Token operator, Expression rightExpression) {
-        this.leftExpression = leftExpression;
+    public UnaryExpression(Token operator, Expression rightExpression) {
         this.operator = operator;
         this.rightExpression = rightExpression;
     }
 
     @Override
     public <T> DataTypeValue accept(ExpressionVisitor<T> visitor) throws InterpreterError {
-        return visitor.visitBinaryExpression(this);
-    }
-
-    public Expression getLeftExpression() {
-        return leftExpression;
+        return visitor.visitUnaryExpression(this);
     }
 
     public Token getOperator() {

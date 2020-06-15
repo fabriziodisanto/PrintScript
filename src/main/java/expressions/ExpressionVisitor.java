@@ -1,7 +1,8 @@
 package expressions;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
 import errors.InterpreterError;
+import expressions.types.*;
 
 public interface ExpressionVisitor<T> {
     DataTypeValue visitBinaryExpression(BinaryExpression expression) throws InterpreterError;

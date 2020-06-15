@@ -1,6 +1,6 @@
 package expressions.factory;
 
-import expressions.AssignExpression;
+import expressions.types.AssignExpression;
 import expressions.Expression;
 import token.Token;
 

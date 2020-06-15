@@ -1,9 +1,11 @@
-package parser.expressionsParser;
+package parser.expressionsParser.types;
 
 import errors.ParserError;
 import expressions.Expression;
 import expressions.factory.BinaryExpressionFactory;
-import expressions.helper.TokenExpression;
+import expressions.types.TokenExpression;
+import parser.expressionsParser.ExpressionParser;
+import parser.expressionsParser.ExpressionParserForm;
 import token.Token;
 import token.TokenType;
 
@@ -12,10 +14,10 @@ import java.util.List;
 
 import static token.TokenType.*;
 
-public class MultiplicationParser extends ExpressionParser{
+public class MultiplicationParser extends ExpressionParser {
 
     public MultiplicationParser() {
-        super(ExpressionType.LEFT_OPERATOR_RIGHT);
+        super(ExpressionParserForm.LEFT_OPERATOR_RIGHT);
     }
 
     @Override

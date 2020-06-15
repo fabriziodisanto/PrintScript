@@ -2,7 +2,7 @@ package parser;
 
 import errors.ParserError;
 import expressions.Expression;
-import expressions.helper.TokenExpression;
+import expressions.types.TokenExpression;
 import parser.expressionsParser.ExpressionParser;
 import token.Token;
 import token.TokenType;
@@ -50,7 +50,8 @@ public class ParserImpl implements Parser {
         expressions = Stream.concat(expressions, Stream.of(expression));
     }
 
-    //        TODO y con el if else que no terminan en ;
+    // TODO y con el if else que no terminan en ;
+    // TODO unary and grouping expressions
     public Expression parse(List<Token> tokens) throws ParserError {
         tokens = filterParseredTokens(tokens);
         ExpressionParser mostPrecedentParser = getMostPrecedentParser(tokens);
@@ -58,7 +59,7 @@ public class ParserImpl implements Parser {
         Expression left = null;
         Token operator = null;
         Expression right = null;
-        switch (mostPrecedentParser.getExpressionType()){
+        switch (mostPrecedentParser.getExpressionParserForm()){
             case LEFT_OPERATOR_RIGHT:
                 left = parse(tokenExpression.getLeft());
                 operator = tokenExpression.getOperator();

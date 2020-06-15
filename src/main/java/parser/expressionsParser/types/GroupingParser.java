@@ -1,9 +1,11 @@
-package parser.expressionsParser;
+package parser.expressionsParser.types;
 
 import errors.ParserError;
 import expressions.Expression;
 import expressions.factory.GroupExpressionFactory;
-import expressions.helper.TokenExpression;
+import expressions.types.TokenExpression;
+import parser.expressionsParser.ExpressionParser;
+import parser.expressionsParser.ExpressionParserForm;
 import token.Token;
 import token.TokenType;
 
@@ -12,10 +14,10 @@ import java.util.List;
 
 import static token.TokenType.*;
 
-public class GroupingParser extends ExpressionParser{
+public class GroupingParser extends ExpressionParser {
 
     public GroupingParser() {
-        super(ExpressionType.RIGHT);
+        super(ExpressionParserForm.RIGHT);
     }
 
     @Override

@@ -1,9 +1,11 @@
-package expressions;
+package expressions.types;
 
-import data.DataTypeValue;
+import data.values.DataTypeValue;
+import expressions.Expression;
+import expressions.ExpressionVisitor;
 import token.Token;
 
-public class AssignExpression extends Expression{
+public class AssignExpression extends Expression {
 
     private Token name;
     private Expression value;
