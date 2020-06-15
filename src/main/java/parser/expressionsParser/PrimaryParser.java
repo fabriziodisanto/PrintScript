@@ -1,5 +1,6 @@
 package parser.expressionsParser;
 
+import errors.ParserError;
 import expressions.Expression;
 import expressions.factory.LiteralExpressionFactory;
 import expressions.helper.TokenExpression;
@@ -23,8 +24,18 @@ public class PrimaryParser extends ExpressionParser{
     }
 
     @Override
-    public TokenExpression parse(List<Token> tokenList){
-        return new TokenExpression(null, tokenList.get(0), null);
+    public TokenExpression parse(List<Token> tokenList) throws ParserError {
+        return new TokenExpression(null, getFirstPrimary(tokenList), null);
+    }
+
+    private Token getFirstPrimary(List<Token> tokenList) throws ParserError {
+        int i = 0;
+        Token lastToken = null;
+        for (; i < tokenList.size(); i++) {
+            lastToken = tokenList.get(i);
+            if (getTokensToMatch().contains(lastToken.getType())) return lastToken;
+        }
+        throw new ParserError(lastToken.getLineNumber(), lastToken.getColPositionStart(), lastToken.getColPositionEnd(), getStringsTokenToMatch());
     }
 
 

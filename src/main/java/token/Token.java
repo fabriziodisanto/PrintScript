@@ -8,6 +8,7 @@ public class Token {
     private int lineNumber;
     private int colPositionStart;
     private int colPositionEnd;
+    private boolean beenParsed;
 
     public Token(TokenType type, DataTypeValue value, int lineNumber, int colPositionStart, int colPositionEnd) {
         this.type = type;
@@ -15,6 +16,7 @@ public class Token {
         this.lineNumber = lineNumber;
         this.colPositionStart = colPositionStart;
         this.colPositionEnd = colPositionEnd;
+        this.beenParsed = false;
     }
 
     public TokenType getType() {
@@ -35,5 +37,13 @@ public class Token {
 
     public int getColPositionEnd() {
         return colPositionEnd;
+    }
+
+    public void setBeenParsed(){
+        this.beenParsed = true;
+    }
+
+    public boolean hasBeenParsed(){
+        return this.beenParsed;
     }
 }

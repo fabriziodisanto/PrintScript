@@ -181,23 +181,23 @@ public class ScannerTests {
         assertEquals(false, tokens.get(6).getValue().getValue());
     }
 
-//    @Test(expected = LexerError.class)
-//    public void test003_scanFailsWithInvalidSpecialChar() throws LexerError {
-//        StringBuffer stringBuffer = new StringBuffer("@");
-//        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
-//        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
-//        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
-//        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
-//
-//        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
-//        lexersList.add(identifierAndKeywordsLexer);
-//        lexersList.add(numberLexer);
-//        lexersList.add(specialCharactersLexer);
-//        lexersList.add(stringLexer);
-//
-//        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
-//        scanner.analyze().collect(Collectors.toList());
-//    }
+    @Test(expected = LexerError.class)
+    public void test003_scanFailsWithInvalidSpecialChar() throws LexerError {
+        StringBuffer stringBuffer = new StringBuffer("@");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+        lexersList.add(identifierAndKeywordsLexer);
+        lexersList.add(numberLexer);
+        lexersList.add(specialCharactersLexer);
+        lexersList.add(stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        scanner.analyze().collect(Collectors.toList());
+    }
 
     private void assertTokenType(List<Token> tokens, Map<Integer, TokenType> indexAndTokenTypeMap){
         for (Map.Entry<Integer,TokenType> entry : indexAndTokenTypeMap.entrySet())

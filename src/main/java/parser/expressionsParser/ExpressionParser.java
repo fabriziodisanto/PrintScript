@@ -22,17 +22,31 @@ public abstract class ExpressionParser {
 
     public abstract TokenExpression parse(List<Token> tokens) throws ParserError;
 
-    TokenExpression parseLeftOpRight(List<Token> tokenList){
+    TokenExpression parseLeftOpRight(List<Token> tokenList) throws ParserError {
         List<Token> left = new ArrayList<>();
         int i = 0;
         Token token = tokenList.get(i);
-        while(!tokensToMatch.contains(token)){
-            left.add(token);
-            token = tokenList.get(++i);
+        try {
+            while (!tokensToMatch.contains(token.getType())) {
+                left.add(token);
+                token = tokenList.get(++i);
+            }
+        } catch (IndexOutOfBoundsException exc) {
+            throw new ParserError(token.getLineNumber(), token.getColPositionStart(), token.getColPositionEnd(), getStringsTokenToMatch());
         }
         Token operator = token;
         List<Token> right = tokenList.subList(++i, tokenList.size());
+        if(left.isEmpty() || right.isEmpty())
+            throw new ParserError("Invalid expression in line " + token.getLineNumber());
         return new TokenExpression(left, operator, right);
+    }
+
+    public String getStringsTokenToMatch(){
+        String result = "[ " + tokensToMatch.get(0).toString();
+        for (int i = 1; i < tokensToMatch.size(); i++) {
+            result = result.concat(", ").concat(tokensToMatch.get(i).toString());
+        }
+        return result.concat(" ]");
     }
 
     TokenExpression parseOpRight(List<Token> tokenList){

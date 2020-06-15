@@ -1,9 +1,9 @@
 import errors.LexerError;
+import errors.ParserError;
 import expressions.Expression;
 import parser.ParserImpl;
 import parser.expressionsParser.*;
 import scanner.lexer.*;
-import org.junit.Before;
 import org.junit.Test;
 import scanner.Scanner;
 import scanner.ScannerImpl;
@@ -13,13 +13,12 @@ import token.TokenType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ParserTests {
-
-    private Map<Integer, TokenType> indexAndTokenTypeMap;
-    private Map<Integer, Integer[]> indexAndTokenPositionsMap;
 
     private Map<String, TokenType> keywords = getKeywords();
     private Map<String, TokenType> getKeywords() {
@@ -66,32 +65,21 @@ public class ParserTests {
     private Map<Integer, ExpressionParser> expressionParserMap = getExpressionParserMap();
     private Map<Integer, ExpressionParser> getExpressionParserMap() {
         HashMap<Integer, ExpressionParser> expressionsParserMap = new HashMap<>();
-        expressionsParserMap.put(0, new GroupingParser());
+//        expressionsParserMap.put(6, new GroupingParser());
         expressionsParserMap.put(1, new ComparisonParser());
         expressionsParserMap.put(2, new AdditionParser());
         expressionsParserMap.put(3, new MultiplicationParser());
         expressionsParserMap.put(4, new UnaryParser());
         expressionsParserMap.put(5, new PrimaryParser());
         return expressionsParserMap;
-
-//        expression → assignment ; assignment → IDENTIFIER "=" assigment | comparison ;
-//comparison → addition ( ( ">" | ">=" | "<" | "<=" ) addition )* ;
-//addition → multiplication ( ( "-" | "+" ) multiplication )* ;
-//multiplication → unary ( ( "/" | "*" ) unary )* ;
-//unary  → ( "-" ) unary | primary ;
-//primary  → NUMBER | STRING | "false" | "true" | "nil?" | "(" expression ")" | IDENTIFIER ;
     }
 
-    @Before
-    public void setUpTests(){
-        indexAndTokenTypeMap = new HashMap<>();
-        indexAndTokenPositionsMap = new HashMap<>();
-    }
 
-//    todo assert
+//    todo - unary ?
+//    todo  ()
     @Test
-    public void test001_scanExampleCodeSource() throws LexerError {
-        StringBuffer stringBuffer = new StringBuffer("(-5 * 4 + (false)) >= 63;");
+    public void test001_scanExampleCodeSource() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("5 * 4 + false >= 63;");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -109,7 +97,104 @@ public class ParserTests {
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressions = parser.analyze();
-        System.out.println("hola");
+        Stream<Expression> expressionStream = parser.analyze();
+        Expression expression = expressionStream.collect(Collectors.toList()).get(0);
+
+//        todo assert? maybe print tree?
+    }
+
+    @Test(expected = ParserError.class)
+    public void test002_scanFailsWithInvalidExpression() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("5 * 4 ++ false >= 63;");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+        lexersList.add(booleanLexer);
+        lexersList.add(identifierAndKeywordsLexer);
+        lexersList.add(numberLexer);
+        lexersList.add(specialCharactersLexer);
+        lexersList.add(stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
+        Stream<Expression> expressionStream = parser.analyze();
+    }
+
+    @Test(expected = ParserError.class)
+    public void test003_scanFailsWithInvalidExpression() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("5 * 4 6+ false = 63;");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+        lexersList.add(booleanLexer);
+        lexersList.add(identifierAndKeywordsLexer);
+        lexersList.add(numberLexer);
+        lexersList.add(specialCharactersLexer);
+        lexersList.add(stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
+        Stream<Expression> expressionStream = parser.analyze();
+    }
+
+    @Test(expected = ParserError.class)
+    public void test004_scanFailsWithInvalidExpression() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("5 * 4 6+ false = 63");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+        lexersList.add(booleanLexer);
+        lexersList.add(identifierAndKeywordsLexer);
+        lexersList.add(numberLexer);
+        lexersList.add(specialCharactersLexer);
+        lexersList.add(stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
+        Stream<Expression> expressionStream = parser.analyze();
+    }
+
+    @Test
+    public void test005_scanExampleMultiLineCodeSource() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("5 * 4 + false >= 63;\n 5 - 3 + \"hola\";");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        ArrayList<AbstractLexer> lexersList = new ArrayList<>();
+        lexersList.add(booleanLexer);
+        lexersList.add(identifierAndKeywordsLexer);
+        lexersList.add(numberLexer);
+        lexersList.add(specialCharactersLexer);
+        lexersList.add(stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersList, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
+        Stream<Expression> expressionStream = parser.analyze();
+        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+
+//        todo assert? maybe print tree?
     }
 }

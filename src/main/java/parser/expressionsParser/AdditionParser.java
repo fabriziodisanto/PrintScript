@@ -1,5 +1,6 @@
 package parser.expressionsParser;
 
+import errors.ParserError;
 import expressions.Expression;
 import expressions.factory.BinaryExpressionFactory;
 import expressions.helper.TokenExpression;
@@ -31,7 +32,7 @@ public class AdditionParser extends ExpressionParser{
     }
 
     @Override
-    public TokenExpression parse(List<Token> tokenList){
+    public TokenExpression parse(List<Token> tokenList) throws ParserError {
         return parseLeftOpRight(tokenList);
     }
 }

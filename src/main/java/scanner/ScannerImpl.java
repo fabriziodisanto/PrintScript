@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import static token.TokenType.EOF;
 
-//mhmh extenderlo del abstract scanner.lexer?
 public class ScannerImpl implements Scanner {
 
     // todo private SourceReader sourceReader;
@@ -31,7 +30,8 @@ public class ScannerImpl implements Scanner {
         this.fileName = fileName;
         this.codeSource = codeSource;
         this.tokenList = new ArrayList<Token>().stream();
-//        TODO importante, boolean scanner.lexer antes que el keyword, sino los convierte en identifiers
+//        TODO importante, boolean scanner.lexer antes que el keyword, sino los convierte en identifiers,
+//         maybe map con precedence como en expressions
         this.lexerList = lexerList;
         this.tokenFactory = tokenFactory;
     }
@@ -42,16 +42,8 @@ public class ScannerImpl implements Scanner {
 
     public Stream<Token> analyze() throws LexerError {
         while (!isEndOfSource()) {
-//            todo mhm queremos try catchearlo?
-            try {
-                Token token = scanToken();
-                addTokenToStream(token);
-            }
-            catch (LexerError lexerError) {
-                System.out.println(lexerError.getMessage());
-//                todo mmhmh queremos exitear?
-                System.exit(1);
-            }
+            Token token = scanToken();
+            addTokenToStream(token);
         }
         colPositionStart = colPositionEnd;
         addTokenToStream(tokenFactory.build(EOF, null, lineNumber, colPositionStart, ++colPositionEnd));
