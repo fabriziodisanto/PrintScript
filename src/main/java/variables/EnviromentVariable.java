@@ -8,4 +8,5 @@ public interface EnviromentVariable {
     void defineVariable(String name, DataTypeValue value) throws VariableError;
     DataTypeValue getValue(String name) throws VariableError;
     void putValue(String name, DataTypeValue value) throws VariableError;
+    boolean exists(String name);
 }

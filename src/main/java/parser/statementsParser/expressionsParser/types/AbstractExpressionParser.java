@@ -81,4 +81,14 @@ public abstract class AbstractExpressionParser {
         tokenTypeList.addAll(Arrays.asList(types));
         return tokenTypeList;
     }
+
+    int getFirstEqualIndex(List<Token> tokenList, TokenType tokenType) throws ParserError {
+        int i = 0;
+        Token lastToken = null;
+        for (; i < tokenList.size(); i++) {
+            lastToken = tokenList.get(i);
+            if (lastToken.getType() == tokenType) return i;
+        }
+        throw new ParserError(lastToken.getLineNumber(), lastToken.getColPositionStart(), lastToken.getColPositionEnd(), tokenType.toString());
+    }
 }

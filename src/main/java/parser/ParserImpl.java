@@ -26,6 +26,7 @@ public class ParserImpl implements Parser {
         this.statements = new ArrayList<Statement>().stream();
     }
 
+//    split by semicolons?
     public Stream<Statement> analyze() throws ParserError {
         while (!lastExpression) {
             List<Token> tokenList = tokenStream.collect(Collectors.toList());

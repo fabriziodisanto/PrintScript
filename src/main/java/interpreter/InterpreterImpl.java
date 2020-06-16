@@ -39,6 +39,10 @@ public class InterpreterImpl implements Interpreter {
         this.provider = new BinaryExpressionsInterpretersProvider();
     }
 
+    public EnviromentVariable getEnviromentVariable() {
+        return enviromentVariable;
+    }
+
     @Override
     public DataTypeValue visitExpressionStatement(Expression expression) throws InterpreterError, VariableError {
         return evaluate(expression);
@@ -67,11 +71,11 @@ public class InterpreterImpl implements Interpreter {
         TokenType type = variableStatement.getType().getType();
         DataTypeValue dataTypeValue = null;
         if(variableStatement.getValue() == null) {
-            if (type == TokenType.NUMBER) {
+            if (type == TokenType.NUMBER_VAR) {
                 dataTypeValue = new NumberValue(null);
             } else if (type == TokenType.BOOLEAN) {
                 dataTypeValue = new BooleanValue(null);
-            } else if (type == TokenType.STRING) {
+            } else if (type == TokenType.STRING_VAR) {
                 dataTypeValue = new StringValue(null);
             }
         }else{
@@ -133,8 +137,8 @@ public class InterpreterImpl implements Interpreter {
     @Override
     public DataTypeValue visitAssignExpression(AssignExpression expression) throws InterpreterError, VariableError {
         DataTypeValue value = evaluate(expression.getValue());
-        enviromentVariable.putValue(expression.getName().getValue().toString(), value);
-        return null;
+        enviromentVariable.putValue(expression.getName().getValue().getValue().toString(), value);
+        return value;
     }
 
     @Override
@@ -162,7 +166,7 @@ public class InterpreterImpl implements Interpreter {
 
     @Override
     public DataTypeValue visitVariableExpression(VariableExpression expression) throws VariableError {
-        return enviromentVariable.getValue(expression.getName().getValue().toString());
+        return enviromentVariable.getValue(expression.getName().getValue().getValue().toString());
     }
 
     private DataTypeValue evaluate(Expression expression) throws InterpreterError, VariableError {
@@ -173,8 +177,6 @@ public class InterpreterImpl implements Interpreter {
         return statement.accept(this);
     }
 
-//    no devolver void
-//    todo devolver lo que devuelve cada statement
     @Override
     public List<DataTypeValue> interpret(Stream<Statement> statements) throws InterpreterError, VariableError {
         List<DataTypeValue> dataTypeValues = new ArrayList<>();

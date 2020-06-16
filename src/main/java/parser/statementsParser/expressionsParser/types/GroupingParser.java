@@ -31,19 +31,9 @@ public class GroupingParser extends AbstractExpressionParser {
     }
 
     private List<Token> getExpressionInsideParens(List<Token> tokenList) throws ParserError {
-        int firstLeftParenIndex = getFirstLeftParenIndex(tokenList);
+        int firstLeftParenIndex = super.getFirstEqualIndex(tokenList, LEFT_PAREN);
         int lastRightParenIndex = getLastRightParenIndex(tokenList);
         return tokenList.subList(firstLeftParenIndex, lastRightParenIndex);
-    }
-
-    private int getFirstLeftParenIndex(List<Token> tokenList) throws ParserError {
-        int i = 0;
-        Token lastToken = null;
-        for (; i < tokenList.size(); i++) {
-            lastToken = tokenList.get(i);
-            if (lastToken.getType() == LEFT_PAREN) return i+1;
-        }
-        throw new ParserError(lastToken.getLineNumber(), lastToken.getColPositionStart(), lastToken.getColPositionEnd(), "(");
     }
 
     private int getLastRightParenIndex(List<Token> tokenList) throws ParserError {

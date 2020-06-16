@@ -1,11 +1,11 @@
 package statement.expression.types;
 
 import data.values.DataTypeValue;
+import errors.VariableError;
 import statement.StatementVisitor;
 import statement.expression.Expression;
 import token.Token;
 
-//todo eliminar?
 public class VariableExpression extends Expression {
 
     private Token name;
@@ -15,7 +15,7 @@ public class VariableExpression extends Expression {
     }
 
     @Override
-    public DataTypeValue accept(StatementVisitor visitor) {
+    public DataTypeValue accept(StatementVisitor visitor) throws VariableError {
         return visitor.visitVariableExpression(this);
     }
 

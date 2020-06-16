@@ -2,6 +2,7 @@ package statement.expression.types;
 
 import data.values.DataTypeValue;
 import errors.InterpreterError;
+import errors.VariableError;
 import statement.StatementVisitor;
 import statement.expression.Expression;
 import token.Token;
@@ -17,7 +18,7 @@ public class UnaryExpression extends Expression {
     }
 
     @Override
-    public DataTypeValue accept(StatementVisitor visitor) throws InterpreterError {
+    public DataTypeValue accept(StatementVisitor visitor) throws InterpreterError, VariableError {
         return visitor.visitUnaryExpression(this);
     }
 

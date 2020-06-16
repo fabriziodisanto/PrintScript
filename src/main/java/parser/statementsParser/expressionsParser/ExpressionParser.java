@@ -26,6 +26,7 @@ public class ExpressionParser extends StatementParser {
 //    todo que no maneje mas si es el end of file;
     public Expression parse(List<Token> tokens) throws ParserError {
         tokens = filterParseredTokens(tokens);
+        if(tokens.size() == 1 && tokens.get(0).getType() == TokenType.SEMICOLON) return null;
         AbstractExpressionParser mostPrecedentParser = getMostPrecedentParser(tokens);
         TokenExpression tokenExpression = mostPrecedentParser.parse(tokens);
         Expression left = null;
@@ -66,12 +67,13 @@ public class ExpressionParser extends StatementParser {
         return filtered;
     }
 
-    private AbstractExpressionParser getMostPrecedentParser(List<Token> tokens) {
+    private AbstractExpressionParser getMostPrecedentParser(List<Token> tokens) throws ParserError {
         HashMap<Integer, AbstractExpressionParser> possibleParsers = new HashMap<>();
         for (Map.Entry<Integer, AbstractExpressionParser> entry : expressionParsers.entrySet()){
             if(containsAny(entry.getValue().getTokensToMatch(), tokens))
                 possibleParsers.put(entry.getKey(), entry.getValue());
         }
+        if (possibleParsers.isEmpty()) throw new ParserError("Expression could not be parsed in line " + tokens.get(tokens.size()-1).getLineNumber());
         AbstractExpressionParser abstractExpressionParser = null;
         int i = 0;
         while (abstractExpressionParser == null) {

@@ -21,6 +21,8 @@ public enum TokenType {
     STRING,
     NUMBER,
     BOOLEAN,
+    NUMBER_VAR,
+    STRING_VAR,
     LET,
     CONST,
     IF,

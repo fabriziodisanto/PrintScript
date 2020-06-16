@@ -3,10 +3,9 @@ import errors.ParserError;
 import parser.statementsParser.ImportParser;
 import parser.statementsParser.PrintParser;
 import parser.statementsParser.StatementParser;
-import parser.statementsParser.VariableParser;
+import parser.statementsParser.VariableDeclarationParser;
 import parser.statementsParser.expressionsParser.ExpressionParser;
 import statement.Statement;
-import statement.expression.Expression;
 import parser.ParserImpl;
 import parser.statementsParser.expressionsParser.types.*;
 import scanner.LexerProvider;
@@ -33,6 +32,10 @@ public class ParserTests {
         keywords.put("import",  TokenType.IMPORT);
         keywords.put("let",     TokenType.LET);
         keywords.put("print", TokenType.PRINT);
+        keywords.put("number",  TokenType.NUMBER_VAR);
+        keywords.put("string",     TokenType.STRING_VAR);
+        keywords.put("boolean", TokenType.BOOLEAN);
+
         return keywords;
     }
 
@@ -73,6 +76,7 @@ public class ParserTests {
     private Map<Integer, AbstractExpressionParser> getExpressionParserMap() {
         HashMap<Integer, AbstractExpressionParser> expressionsParserMap = new HashMap<>();
 //        expressionsParserMap.put(6, new GroupingParser());
+        expressionsParserMap.put(0, new AssignExpressionParser());
         expressionsParserMap.put(1, new ComparisonParser());
         expressionsParserMap.put(2, new AdditionParser());
         expressionsParserMap.put(3, new MultiplicationParser());
@@ -86,7 +90,7 @@ public class ParserTests {
         HashMap<Integer, StatementParser> statementParserMap = new HashMap<>();
         statementParserMap.put(1, new ImportParser(new ExpressionParser(expressionParserMap)));
         statementParserMap.put(2, new PrintParser(new ExpressionParser(expressionParserMap)));
-        statementParserMap.put(3, new VariableParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(3, new VariableDeclarationParser(new ExpressionParser(expressionParserMap)));
         statementParserMap.put(5, new ExpressionParser(expressionParserMap));
         return statementParserMap;
     }
@@ -213,4 +217,111 @@ public class ParserTests {
 
 //        todo assert? maybe print tree?
     }
+
+    @Test
+    public void test006_scanVariableDeclarationStatement() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("let variable: number = 5;");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        List<Statement> statements = statementStream.collect(Collectors.toList());
+
+//        todo assert? maybe print tree?
+    }
+
+    @Test
+    public void test007_scanVariableDeclarationNotInitializedStatement() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("let variable: string;");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        List<Statement> statements = statementStream.collect(Collectors.toList());
+
+//        todo assert? maybe print tree?
+    }
+
+    @Test
+    public void test008_scanVariableDeclarationStatement() throws LexerError, ParserError {
+        StringBuffer stringBuffer = new StringBuffer("let var: boolean = false;\n print(var);");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Stream<Token> tokens = scanner.analyze();
+
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        List<Statement> statements = statementStream.collect(Collectors.toList());
+
+//        todo assert? maybe print tree?
+    }
+
+////    todo a = a + b falla
+//    @Test
+//    public void test009_scanVariableDeclarationStatement() throws LexerError, ParserError {
+//        StringBuffer stringBuffer = new StringBuffer("let a: number = 2;\n const b: number = 5;\n a = a + b;");
+//        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+//        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+//        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+//        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+//        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+//
+//        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+//        lexersPrecedenceMap.put(1, booleanLexer);
+//        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+//        lexersPrecedenceMap.put(3, numberLexer);
+//        lexersPrecedenceMap.put(4, specialCharactersLexer);
+//        lexersPrecedenceMap.put(5, stringLexer);
+//
+//        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+//        Stream<Token> tokens = scanner.analyze();
+//
+//        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+//        Stream<Statement> statementStream = parser.analyze();
+//        List<Statement> statements = statementStream.collect(Collectors.toList());
+//
+////        todo assert? maybe print tree?
+//    }
+
+
 }
