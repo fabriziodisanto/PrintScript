@@ -1,3 +1,4 @@
+import data.values.DataTypeValue;
 import errors.*;
 import parser.statementsParser.ImportParser;
 import parser.statementsParser.PrintParser;
@@ -19,8 +20,11 @@ import token.factory.TokenFactoryImpl;
 import token.TokenType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class InterpreterTests {
@@ -119,7 +123,7 @@ public class InterpreterTests {
 
     @Test
     public void test002_interpretMathSumWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("print(5 + 4 - 32); print(37 + 19);");
+        StringBuffer stringBuffer = new StringBuffer("print(5 + 4 - 32); 37 + 19;");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -141,13 +145,9 @@ public class InterpreterTests {
 
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.interpret(statementStream);
-//        todo assert
-//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-//        DataTypeValue result2 = interpreter.visitBinaryExpression((BinaryExpression) expression2);
-//
-//        assertEquals(-23.0, result.getValue());
-//        assertEquals(56.0, result2.getValue());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("-23.0", values.get(0).getValue());
+        assertEquals(56.0, values.get(1).getValue());
     }
 
     @Test
@@ -173,9 +173,8 @@ public class InterpreterTests {
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.interpret(statementStream);
-//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-//        assertEquals(10.0, result.getValue());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("10.0", values.get(0).getValue());
 //        todo assert
     }
 
@@ -202,18 +201,13 @@ public class InterpreterTests {
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.interpret(statementStream);
-
-//        Expression expression = expressionList.get(0);
-//        Interpreter interpreter = new InterpreterImpl();
-//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-//        assertEquals(true, result.getValue());
-//        todo assert
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("true", values.get(0).getValue());
     }
 
     @Test
     public void test005_interpretComparisonEqualWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("print(5 <= 4 / 2 + 3);");
+        StringBuffer stringBuffer = new StringBuffer("5 <= 4 / 2 + 3;");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -234,12 +228,8 @@ public class InterpreterTests {
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.interpret(statementStream);
-
-//        Expression expression = expressionList.get(0);
-//        Interpreter interpreter = new InterpreterImpl();
-//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-//        assertEquals(true, result.getValue());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals(true, values.get(0).getValue());
     }
 
     @Test
@@ -265,12 +255,7 @@ public class InterpreterTests {
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.interpret(statementStream);
-//
-//        Expression expression = expressionList.get(0);
-//        Interpreter interpreter = new InterpreterImpl();
-//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-//        assertEquals("hola que tal 43.0", result.getValue());
-//        todo assert
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("hola que tal 43.0", values.get(0).getValue());
     }
 }

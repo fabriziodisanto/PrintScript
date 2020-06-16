@@ -3,6 +3,7 @@ package interpreter;
 import data.types.NumberType;
 import data.values.DataTypeValue;
 import data.values.NumberValue;
+import data.values.StringValue;
 import errors.InterpreterError;
 import statement.Statement;
 import statement.expression.Expression;
@@ -15,6 +16,7 @@ import statement.variableStatement.VariableStatement;
 import token.Token;
 import token.TokenType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,7 +43,7 @@ public class InterpreterImpl implements Interpreter {
     @Override
     public DataTypeValue visitPrintStatement(PrintStatement printStatement) throws InterpreterError {
         System.out.println(evaluate(printStatement.getExpression()).getValue());
-        return null;
+        return new StringValue(evaluate(printStatement.getExpression()).getValue().toString());
     }
 
     @Override
@@ -115,11 +117,15 @@ public class InterpreterImpl implements Interpreter {
         return statement.accept(this);
     }
 
+//    no devolver void
+//    todo devolver lo que devuelve cada statement
     @Override
-    public void interpret(Stream<Statement> statements) throws InterpreterError {
+    public List<DataTypeValue> interpret(Stream<Statement> statements) throws InterpreterError {
+        List<DataTypeValue> dataTypeValues = new ArrayList<>();
         List<Statement> statementsList = statements.collect(Collectors.toList());
         for (Statement statement : statementsList) {
-            execute(statement);
+            dataTypeValues.add(execute(statement));
         }
+        return dataTypeValues;
     }
 }
