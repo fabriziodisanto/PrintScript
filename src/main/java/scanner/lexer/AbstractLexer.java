@@ -15,6 +15,10 @@ public abstract class AbstractLexer implements Lexer {
     TokenFactory tokenFactory;
     LexerType lexerType;
 
+    public void setCodeSource(StringBuffer codeSource) {
+        this.codeSource = codeSource;
+    }
+
     Boolean isEndOfSource() {
         return codeSource == null || currentPosition >= codeSource.length();
     }

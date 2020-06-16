@@ -1,0 +1,9 @@
+let x: number = 5;
+let y: string = "Something";
+let z: string = "AnotherThing";
+let a: boolean = true;
+
+print(x);
+print(y);
+print(z);
+print(a);

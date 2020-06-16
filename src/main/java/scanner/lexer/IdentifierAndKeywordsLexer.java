@@ -14,8 +14,7 @@ public class IdentifierAndKeywordsLexer extends AbstractLexer{
 
     private Map<String, TokenType> keywordsMap;
 
-    public IdentifierAndKeywordsLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> keywordsMap) {
-        super.codeSource = codeSource;
+    public IdentifierAndKeywordsLexer(TokenFactory tokenFactory, Map<String, TokenType> keywordsMap) {
         super.lineNumber = 1;
         super.startPosition = 0;
         super.currentPosition = 0;

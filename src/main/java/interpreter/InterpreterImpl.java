@@ -23,6 +23,7 @@ import token.Token;
 import token.TokenType;
 import variables.EnviromentVariable;
 import variables.EnviromentVariableImpl;
+import variables.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +57,12 @@ public class InterpreterImpl implements Interpreter {
 
     @Override
     public DataTypeValue visitPrintStatement(PrintStatement printStatement) throws InterpreterError, VariableError {
-        System.out.println(evaluate(printStatement.getExpression()).getValue());
-        return new StringValue(evaluate(printStatement.getExpression()).getValue().toString());
+        if(evaluate(printStatement.getExpression()).getValue() != null) {
+            System.out.println(evaluate(printStatement.getExpression()).getValue());
+            return new StringValue(evaluate(printStatement.getExpression()).getValue().toString());
+        }
+        System.out.println("null");
+        return new StringValue(null);
     }
 
     @Override
@@ -166,7 +171,12 @@ public class InterpreterImpl implements Interpreter {
 
     @Override
     public DataTypeValue visitVariableExpression(VariableExpression expression) throws VariableError {
-        return enviromentVariable.getValue(expression.getName().getValue().getValue().toString());
+        Token name = expression.getName();
+        DataTypeValue value = enviromentVariable.getValue(name.getValue().getValue().toString());
+        if (value == null) throw new VariableError("Variable was not initialized in line " + name.getLineNumber()
+                + " from " + name.getColPositionStart()
+                + " to " + name.getColPositionEnd());
+        return value;
     }
 
     private DataTypeValue evaluate(Expression expression) throws InterpreterError, VariableError {

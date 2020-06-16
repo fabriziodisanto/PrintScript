@@ -13,8 +13,7 @@ public class SpecialCharactersLexer extends AbstractLexer{
 
     private Map<String, TokenType> specialCharKeywordsMap;
 
-    public SpecialCharactersLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> specialCharKeywordsMap) {
-        super.codeSource = codeSource;
+    public SpecialCharactersLexer(TokenFactory tokenFactory, Map<String, TokenType> specialCharKeywordsMap) {
         super.lineNumber = 1;
         super.currentPosition = 0;
         super.colPositionStart = 0;

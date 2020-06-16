@@ -1,0 +1,5 @@
+let         a   :                          boolean         =          5
+let    b
+       :
+           String
+   =      "adasdasdasdasdasdasd"

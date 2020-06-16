@@ -15,8 +15,7 @@ public class BooleanLexer extends AbstractLexer {
     private Map<String, TokenType> booleanKeywordsMap;
 
     //we have this booleanKeywords map because maybe in the future we would like to add while, elif, etc
-    public BooleanLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> booleanKeywords) {
-        super.codeSource = codeSource;
+    public BooleanLexer(TokenFactory tokenFactory, Map<String, TokenType> booleanKeywords) {
         super.lineNumber = 1;
         super.currentPosition = 0;
         super.colPositionStart = 0;

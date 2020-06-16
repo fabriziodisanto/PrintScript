@@ -3,9 +3,11 @@ package scanner;
 import errors.LexerError;
 import scanner.lexer.AbstractLexer;
 import scanner.lexer.LexerType;
+import sourceReader.SourceReader;
 import token.Token;
 import token.factory.TokenFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -14,7 +16,7 @@ import static token.TokenType.EOF;
 
 public class ScannerImpl implements Scanner {
 
-    // todo private SourceReader sourceReader;
+    private SourceReader sourceReader;
     private String fileName;
     private StringBuffer codeSource;
     private int lineNumber = 1;
@@ -27,14 +29,22 @@ public class ScannerImpl implements Scanner {
     private LexerProvider provider;
 
 //    todo, hacer que el code source venga del metodo de leer desde el filename
-    public ScannerImpl(String fileName, StringBuffer codeSource, Map<Integer, AbstractLexer> lexerPrecedenceMap,
-                       TokenFactory tokenFactory, LexerProvider provider) {
+    public ScannerImpl(String fileName, Map<Integer, AbstractLexer> lexerPrecedenceMap,
+                       TokenFactory tokenFactory, LexerProvider provider, SourceReader sourceReader) throws IOException {
+        this.sourceReader = sourceReader;
         this.fileName = fileName;
-        this.codeSource = codeSource;
+        this.codeSource = sourceReader.readFromPath(fileName);
         this.tokenList = new ArrayList<Token>().stream();
-        this.lexerPrecedenceMap = lexerPrecedenceMap;
+        this.lexerPrecedenceMap = setCodeSource(lexerPrecedenceMap, this.codeSource);
         this.tokenFactory = tokenFactory;
         this.provider = provider;
+    }
+
+    private Map<Integer, AbstractLexer> setCodeSource(Map<Integer, AbstractLexer> lexerPrecedenceMap, StringBuffer codeSource) {
+        for (AbstractLexer lexer : lexerPrecedenceMap.values()) {
+            lexer.setCodeSource(codeSource);
+        }
+        return lexerPrecedenceMap;
     }
 
     private Boolean isEndOfSource() {

@@ -9,8 +9,7 @@ import static token.TokenType.*;
 
 public class NumberLexer extends AbstractLexer{
 
-    public NumberLexer(StringBuffer codeSource, TokenFactory tokenFactory) {
-        super.codeSource = codeSource;
+    public NumberLexer(TokenFactory tokenFactory) {
         super.lineNumber = 1;
         super.currentPosition = 0;
         super.colPositionStart = 0;
