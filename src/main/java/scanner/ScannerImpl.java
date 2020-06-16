@@ -25,7 +25,7 @@ public class ScannerImpl implements Scanner {
     private int colPositionEnd = 0;
     private Stream<Token> tokenList;
     private TokenFactory tokenFactory;
-    private  Map<Integer, AbstractLexer> lexerPrecedenceMap;
+    private Map<Integer, AbstractLexer> lexerPrecedenceMap;
     private LexerProvider provider;
 
 //    todo, hacer que el code source venga del metodo de leer desde el filename
@@ -74,12 +74,6 @@ public class ScannerImpl implements Scanner {
 
     private void addTokenToStream(Token token) {
         tokenList = Stream.concat(tokenList, Stream.of(token));
-    }
-
-    @Override
-    public StringBuffer readSource(String sourcePath) {
-//        todo implement
-        return null;
     }
 
     private Token scanToken() throws LexerError {
