@@ -125,7 +125,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/variable-reassign.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -152,7 +152,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/variable-without-values.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -179,7 +179,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/variables.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -206,7 +206,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/declare-variable-with-spaces.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -233,7 +233,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/conts.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -260,7 +260,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/invalid-type.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -287,7 +287,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/variable-redeclaration.txt", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -314,7 +314,7 @@ public class TomiTests {
         SourceReader sourceReader = new SourceReaderImpl();
 
         Scanner scanner = new ScannerImpl("/Users/fabriziodisanto/sandbox/Printscript/src/test/java/testSources/wrong-type-assignation", lexersPrecedenceMap, new TokenFactoryImpl(),
-                new LexerProvider(lexersPrecedenceMap), sourceReader);
+                sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);

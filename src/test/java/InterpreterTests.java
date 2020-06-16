@@ -117,7 +117,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -143,7 +143,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -171,7 +171,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -199,7 +199,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -226,7 +226,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -253,7 +253,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -280,7 +280,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -307,7 +307,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -335,7 +335,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -361,7 +361,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);
@@ -387,7 +387,7 @@ public class InterpreterTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
         ParserImpl parser = new ParserImpl(tokens, statementParserMap);

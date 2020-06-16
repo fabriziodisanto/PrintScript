@@ -30,25 +30,25 @@ public class ScannerImpl implements Scanner {
 
 //    todo, hacer que el code source venga del metodo de leer desde el filename
     public ScannerImpl(String fileName, Map<Integer, AbstractLexer> lexerPrecedenceMap,
-                       TokenFactory tokenFactory, LexerProvider provider, SourceReader sourceReader) throws IOException {
+                       TokenFactory tokenFactory, SourceReader sourceReader) throws IOException {
         this.sourceReader = sourceReader;
         this.fileName = fileName;
         this.codeSource = sourceReader.readFromPath(fileName);
         this.tokenList = new ArrayList<Token>().stream();
         this.lexerPrecedenceMap = setCodeSource(lexerPrecedenceMap, this.codeSource);
         this.tokenFactory = tokenFactory;
-        this.provider = provider;
+        this.provider = new LexerProvider(lexerPrecedenceMap);
     }
 
     public ScannerImpl(String fileName, StringBuffer codeSource, Map<Integer, AbstractLexer> lexerPrecedenceMap,
-                       TokenFactory tokenFactory, LexerProvider provider) {
+                       TokenFactory tokenFactory) {
 //        this.sourceReader = sourceReader;
         this.fileName = fileName;
         this.codeSource = codeSource;
         this.tokenList = new ArrayList<Token>().stream();
         this.lexerPrecedenceMap = lexerPrecedenceMap;
         this.tokenFactory = tokenFactory;
-        this.provider = provider;
+        this.provider = new LexerProvider(lexerPrecedenceMap);
     }
 
     private Map<Integer, AbstractLexer> setCodeSource(Map<Integer, AbstractLexer> lexerPrecedenceMap, StringBuffer codeSource) {

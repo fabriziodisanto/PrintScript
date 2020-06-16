@@ -89,8 +89,7 @@ public class Cli implements Runnable {
 
         Scanner scanner = null;
         try {
-            scanner = new ScannerImpl(filePath, lexersPrecedenceMap, new TokenFactoryImpl(),
-                    new LexerProvider(lexersPrecedenceMap), sourceReader);
+            scanner = new ScannerImpl(filePath, lexersPrecedenceMap, new TokenFactoryImpl(), sourceReader);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Invalid file path");

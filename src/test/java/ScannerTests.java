@@ -87,7 +87,7 @@ public class ScannerTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         List<Token> tokens = scanner.analyze().collect(Collectors.toList());
         indexAndTokenTypeMap.put(0, TokenType.LET);
         indexAndTokenTypeMap.put(1, TokenType.IDENTIFIER);
@@ -145,7 +145,7 @@ public class ScannerTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         List<Token> tokens = scanner.analyze().collect(Collectors.toList());
         indexAndTokenTypeMap.put(0, TokenType.CONST);
         indexAndTokenTypeMap.put(1, TokenType.IDENTIFIER);
@@ -196,7 +196,7 @@ public class ScannerTests {
         lexersPrecedenceMap.put(3, specialCharactersLexer);
         lexersPrecedenceMap.put(4, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         scanner.analyze().collect(Collectors.toList());
     }
 
@@ -216,7 +216,7 @@ public class ScannerTests {
         lexersPrecedenceMap.put(4, specialCharactersLexer);
         lexersPrecedenceMap.put(5, stringLexer);
 
-        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         List<Token> tokens = scanner.analyze().collect(Collectors.toList());
         indexAndTokenTypeMap.put(0, TokenType.CONST);
         indexAndTokenTypeMap.put(1, TokenType.IDENTIFIER);

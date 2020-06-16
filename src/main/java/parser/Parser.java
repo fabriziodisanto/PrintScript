@@ -1,9 +1,10 @@
 package parser;
 
-import token.Token;
+import errors.ParserError;
+import statement.Statement;
 
 import java.util.stream.Stream;
 
 public interface Parser {
-//    Stream<Statements> parse(Stream<Token> tokenStream);
+    Stream<Statement> analyze() throws ParserError;
 }
