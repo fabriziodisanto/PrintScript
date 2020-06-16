@@ -3,7 +3,10 @@ package scanner.lexer;
 import data.values.NumberValue;
 import errors.LexerError;
 import token.Token;
+import token.TokenType;
 import token.factory.TokenFactory;
+
+import java.util.Map;
 
 import static token.TokenType.*;
 
@@ -15,6 +18,16 @@ public class NumberLexer extends AbstractLexer{
         super.colPositionStart = 0;
         super.colPositionEnd = 0;
         super.tokenFactory = tokenFactory;
+        super.lexerType = LexerType.DIGIT;
+    }
+
+    public NumberLexer(StringBuffer codeSource, TokenFactory tokenFactory) {
+        super.lineNumber = 1;
+        super.currentPosition = 0;
+        super.colPositionStart = 0;
+        super.colPositionEnd = 0;
+        super.tokenFactory = tokenFactory;
+        super.codeSource = codeSource;
         super.lexerType = LexerType.DIGIT;
     }
 

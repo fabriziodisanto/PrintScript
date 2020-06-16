@@ -40,6 +40,17 @@ public class ScannerImpl implements Scanner {
         this.provider = provider;
     }
 
+    public ScannerImpl(String fileName, StringBuffer codeSource, Map<Integer, AbstractLexer> lexerPrecedenceMap,
+                       TokenFactory tokenFactory, LexerProvider provider) {
+//        this.sourceReader = sourceReader;
+        this.fileName = fileName;
+        this.codeSource = codeSource;
+        this.tokenList = new ArrayList<Token>().stream();
+        this.lexerPrecedenceMap = lexerPrecedenceMap;
+        this.tokenFactory = tokenFactory;
+        this.provider = provider;
+    }
+
     private Map<Integer, AbstractLexer> setCodeSource(Map<Integer, AbstractLexer> lexerPrecedenceMap, StringBuffer codeSource) {
         for (AbstractLexer lexer : lexerPrecedenceMap.values()) {
             lexer.setCodeSource(codeSource);

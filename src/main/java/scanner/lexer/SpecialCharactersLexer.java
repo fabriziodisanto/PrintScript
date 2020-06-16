@@ -23,6 +23,17 @@ public class SpecialCharactersLexer extends AbstractLexer{
         super.lexerType = LexerType.SPECIAL_CHAR;
     }
 
+    public SpecialCharactersLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> specialCharKeywordsMap) {
+        super.lineNumber = 1;
+        super.currentPosition = 0;
+        super.colPositionStart = 0;
+        super.colPositionEnd = 0;
+        super.tokenFactory = tokenFactory;
+        super.codeSource = codeSource;
+        this.specialCharKeywordsMap = specialCharKeywordsMap;
+        super.lexerType = LexerType.SPECIAL_CHAR;
+    }
+
     public Token scanToken() throws LexerError {
         char c = consumeNextChar();
         while (super.removeNotUsedChars(c)){

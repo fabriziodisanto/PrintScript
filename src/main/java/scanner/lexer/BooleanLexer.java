@@ -25,6 +25,18 @@ public class BooleanLexer extends AbstractLexer {
         super.lexerType = LexerType.ALPHA;
     }
 
+    public BooleanLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> booleanKeywords) {
+        super.lineNumber = 1;
+        super.currentPosition = 0;
+        super.colPositionStart = 0;
+        super.colPositionEnd = 0;
+        super.tokenFactory = tokenFactory;
+        this.booleanKeywordsMap = booleanKeywords;
+        super.codeSource = codeSource;
+        super.lexerType = LexerType.ALPHA;
+    }
+
+
     public Token scanToken() throws LexerError {
         char c = consumeNextChar();
         while (super.removeNotUsedChars(c)){

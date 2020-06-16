@@ -25,12 +25,8 @@ import variables.EnviromentVariableImpl;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertEquals;
 
 public class TomiTests {
 
@@ -104,7 +100,7 @@ public class TomiTests {
         HashMap<Integer, StatementParser> statementParserMap = new HashMap<>();
         statementParserMap.put(1, new ImportParser(new ExpressionParser(expressionParserMap)));
         statementParserMap.put(2, new PrintParser(new ExpressionParser(expressionParserMap)));
-        statementParserMap.put(3, new VariableDeclarationParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(3, new VariableDeclarationParser(new ExpressionParser(expressionParserMap), true));
         statementParserMap.put(5, new ExpressionParser(expressionParserMap));
         return statementParserMap;
     }

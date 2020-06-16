@@ -25,6 +25,18 @@ public class IdentifierAndKeywordsLexer extends AbstractLexer{
         super.lexerType = LexerType.ALPHA;
     }
 
+    public IdentifierAndKeywordsLexer(StringBuffer codeSource, TokenFactory tokenFactory, Map<String, TokenType> keywordsMap) {
+        super.lineNumber = 1;
+        super.currentPosition = 0;
+        super.colPositionStart = 0;
+        super.colPositionEnd = 0;
+        super.tokenFactory = tokenFactory;
+        this.keywordsMap = keywordsMap;
+        super.codeSource = codeSource;
+        super.lexerType = LexerType.ALPHA;
+    }
+
+
     public Token scanToken() throws LexerError {
         char c = consumeNextChar();
         while (super.removeNotUsedChars(c)){
