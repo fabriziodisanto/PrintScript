@@ -5,6 +5,7 @@ import errors.LexerError;
 import errors.ParserError;
 import errors.VariableError;
 import interpreter.InterpreterImpl;
+import parser.Parser;
 import parser.ParserImpl;
 import parser.statementsParser.StatementParser;
 import parser.statementsParser.expressionsParser.types.*;
@@ -99,8 +100,7 @@ public class Cli implements Runnable {
             System.out.println(lexerError.getMessage());
             System.exit(1);
         }
-
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = null;
         try {
             statementStream = parser.analyze();

@@ -6,6 +6,7 @@ import errors.VariableError;
 import interpreter.InterpreterImpl;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
+import parser.Parser;
 import parser.statementsParser.ImportParser;
 import parser.statementsParser.PrintParser;
 import parser.statementsParser.StatementParser;
@@ -141,7 +142,7 @@ public class TomiTests {
         Scanner scanner = new ScannerImpl(path, lexersPrecedenceMap, new TokenFactoryImpl(), sourceReader);
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         interpreter.interpret(statementStream);

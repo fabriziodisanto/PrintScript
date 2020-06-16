@@ -1,6 +1,7 @@
 import cli.Utils;
 import data.values.DataTypeValue;
 import errors.*;
+import parser.Parser;
 import parser.statementsParser.StatementParser;
 import statement.Statement;
 import interpreter.Interpreter;
@@ -50,7 +51,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -76,7 +77,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -104,7 +105,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -132,7 +133,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -159,7 +160,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -186,7 +187,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -213,7 +214,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
@@ -240,7 +241,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
 
 
@@ -268,7 +269,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         interpreter.interpret(statementStream);
@@ -294,7 +295,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         interpreter.interpret(statementStream);
@@ -320,7 +321,7 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         interpreter.interpret(statementStream);
