@@ -2,15 +2,17 @@ package statement.variableStatement;
 
 import data.values.DataTypeValue;
 import errors.InterpreterError;
+import errors.VariableError;
 import statement.Statement;
 import statement.StatementVisitor;
 import statement.expression.Expression;
 import token.Token;
+import token.TokenType;
 
 public class VariableStatement implements Statement {
 
     @Override
-    public DataTypeValue accept(StatementVisitor visitor) throws InterpreterError {
+    public DataTypeValue accept(StatementVisitor visitor) throws InterpreterError, VariableError {
         return visitor.visitVariableStatement(this);
     }
 
@@ -26,8 +28,8 @@ public class VariableStatement implements Statement {
         this.value = value;
     }
 
-    public Token getLetOrConst() {
-        return letOrConst;
+    public boolean isConst(){
+        return letOrConst.getType() == TokenType.CONST;
     }
 
     public Token getName() {

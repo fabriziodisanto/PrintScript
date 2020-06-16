@@ -1,5 +1,6 @@
 package scanner.lexer;
 
+import data.values.StringValue;
 import errors.LexerError;
 import token.Token;
 import token.factory.TokenFactory;
@@ -41,6 +42,8 @@ public class IdentifierAndKeywordsLexer extends AbstractLexer{
         String text = codeSource.substring(startPosition, currentPosition);
         TokenType type = keywordsMap.get(text);
         if (type == null) type = IDENTIFIER;
-        return tokenFactory.build(type, null, lineNumber, colPositionStart, colPositionEnd);
+        StringValue value = null;
+        if (type == IDENTIFIER) value = new StringValue(text);
+        return tokenFactory.build(type, value, lineNumber, colPositionStart, colPositionEnd);
     }
 }

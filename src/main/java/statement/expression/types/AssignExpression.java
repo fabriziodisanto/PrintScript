@@ -2,9 +2,9 @@ package statement.expression.types;
 
 import data.values.DataTypeValue;
 import errors.InterpreterError;
+import errors.VariableError;
 import statement.StatementVisitor;
 import statement.expression.Expression;
-import statement.expression.ExpressionVisitor;
 import token.Token;
 
 public class AssignExpression extends Expression {
@@ -17,7 +17,7 @@ public class AssignExpression extends Expression {
         this.value = value;
     }
 
-    public DataTypeValue accept(StatementVisitor visitor) {
+    public DataTypeValue accept(StatementVisitor visitor) throws InterpreterError, VariableError {
         return visitor.visitAssignExpression(this);
     }
 

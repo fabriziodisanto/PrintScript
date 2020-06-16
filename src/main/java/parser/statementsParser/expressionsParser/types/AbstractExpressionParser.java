@@ -42,7 +42,7 @@ public abstract class AbstractExpressionParser {
         return new TokenExpression(left, operator, right);
     }
 
-    public String getStringsTokenToMatch(){
+    String getStringsTokenToMatch(){
         String result = "[ " + tokensToMatch.get(0).toString();
         for (int i = 1; i < tokensToMatch.size(); i++) {
             result = result.concat(", ").concat(tokensToMatch.get(i).toString());
@@ -50,11 +50,24 @@ public abstract class AbstractExpressionParser {
         return result.concat(" ]");
     }
 
-//    TokenExpression parseOpRight(List<Token> tokenList){
-//        Token operator = tokenList.get(0);
-//        List<Token> right = tokenList.subList(1, tokenList.size());
-//        return new TokenExpression(null, operator, right);
-//    }
+    TokenExpression parseOpRight(List<Token> tokenList) throws ParserError {
+        int i = 0;
+        Token token = tokenList.get(i);
+        try {
+            while (!tokensToMatch.contains(token.getType())) {
+                token = tokenList.get(++i);
+            }
+        } catch (IndexOutOfBoundsException exc) {
+            throw new ParserError(token.getLineNumber(), token.getColPositionStart(), token.getColPositionEnd(), getStringsTokenToMatch());
+        }
+        Token operator = token;
+        List<Token> right = tokenList.subList(++i, tokenList.size());
+        if(right.isEmpty())
+            throw new ParserError("Invalid expression in line " + token.getLineNumber());
+        return new TokenExpression(null, operator, right);
+    }
+
+
 
     public abstract List<TokenType> getTokensToMatch();
 

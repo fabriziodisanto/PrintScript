@@ -4,7 +4,6 @@ import data.values.DataTypeValue;
 import errors.InterpreterError;
 import statement.StatementVisitor;
 import statement.expression.Expression;
-import statement.expression.ExpressionVisitor;
 
 public class LiteralExpression extends Expression {
 
