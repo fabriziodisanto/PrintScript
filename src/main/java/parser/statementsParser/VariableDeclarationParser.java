@@ -7,14 +7,24 @@ import statement.variableStatement.VariableStatement;
 import token.Token;
 import token.TokenType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VariableDeclarationParser extends StatementParser{
 
     private ExpressionParser expressionParser;
+    private List<TokenType> validTypes;
 
-    public VariableDeclarationParser(ExpressionParser expressionParser) {
+    public VariableDeclarationParser(ExpressionParser expressionParser, boolean hasBooleans) {
         this.expressionParser = expressionParser;
+        this.validTypes = getValidTypes(hasBooleans);
+    }
+
+    private List<TokenType> getValidTypes(boolean hasBooleans) {
+        ArrayList<TokenType> tokenTypes = new ArrayList<>();
+        addAll(tokenTypes, TokenType.STRING_VAR, TokenType.NUMBER_VAR);
+        if(hasBooleans) tokenTypes.add(TokenType.BOOLEAN);
+        return tokenTypes;
     }
 
     @Override
@@ -33,11 +43,14 @@ public class VariableDeclarationParser extends StatementParser{
                 || tokens.get(0).getType() == TokenType.CONST)
                 && tokens.get(1).getType() == TokenType.IDENTIFIER
                 && tokens.get(2).getType() == TokenType.COLON
-                && (tokens.get(3).getType() == TokenType.STRING_VAR
-                || tokens.get(3).getType() == TokenType.NUMBER_VAR
-                || tokens.get(3).getType() == TokenType.BOOLEAN)
+                && matchAnyOfThisTokensTypes(this.validTypes, tokens.get(3).getType())
                 && (tokens.get(tokens.size() - 1).getType() == TokenType.SEMICOLON
                 || (tokens.get(tokens.size() - 2).getType() == TokenType.SEMICOLON
                 && tokens.get(tokens.size() - 1).getType() == TokenType.EOF)));
+
+    }
+
+    private boolean matchAnyOfThisTokensTypes(List<TokenType> validTypes, TokenType type) {
+        return validTypes.contains(type);
     }
 }
