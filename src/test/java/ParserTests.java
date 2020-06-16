@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+//        todo asserts? maybe print tree?
 public class ParserTests {
 
     private Map<String, TokenType> keywords = Utils.getKeywords();
@@ -54,8 +55,6 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
-
-//        todo assert? maybe print tree?
     }
 
     @Test(expected = ParserError.class)
@@ -127,8 +126,6 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
-
-//        todo assert? maybe print tree?
     }
 
     @Test
@@ -153,8 +150,6 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
-
-//        todo assert? maybe print tree?
     }
 
     @Test
@@ -179,8 +174,6 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
-
-//        todo assert? maybe print tree?
     }
 
     @Test
@@ -205,11 +198,9 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
-
-//        todo assert? maybe print tree?
     }
 
-////    todo a = a + b falla
+//    todo a = a + b falla
 
     private HashMap<Integer, AbstractLexer> getLexerPrecedenceMap(StringLexer stringLexer, NumberLexer numberLexer, BooleanLexer booleanLexer, IdentifierAndKeywordsLexer identifierAndKeywordsLexer, SpecialCharactersLexer specialCharactersLexer) {
         HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();

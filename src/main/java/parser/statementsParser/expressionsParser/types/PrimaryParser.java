@@ -39,8 +39,6 @@ public class PrimaryParser extends AbstractExpressionParser {
         throw new ParserError(lastToken.getLineNumber(), lastToken.getColPositionStart(), lastToken.getColPositionEnd(), getStringsTokenToMatch());
     }
 
-
-    //    todo mhmh
     @Override
     public Expression build(Expression left, Token operator, Expression right) {
         return LiteralExpressionFactory.buildLiteralExpression(operator.getValue());

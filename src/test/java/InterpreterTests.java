@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
-
+//        todo assert?
 public class InterpreterTests {
 
     private Map<String, TokenType> keywords = Utils.getKeywords();
@@ -111,7 +111,6 @@ public class InterpreterTests {
         Interpreter interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         List<DataTypeValue> values = interpreter.interpret(statementStream);
         assertEquals("10.0", values.get(0).getValue());
-//        todo assert
     }
 
     @Test

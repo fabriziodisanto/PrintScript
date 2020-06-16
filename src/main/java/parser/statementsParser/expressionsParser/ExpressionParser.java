@@ -21,9 +21,6 @@ public class ExpressionParser extends StatementParser {
         this.expressionParsers = expressionParsers;
     }
 
-
-//    todo probar con super.parse() ??
-//    todo que no maneje mas si es el end of file;
     public Expression parse(List<Token> tokens) throws ParserError {
         tokens = filterParseredTokens(tokens);
         if(tokens.size() == 1 && tokens.get(0).getType() == TokenType.SEMICOLON) return null;

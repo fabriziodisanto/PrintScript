@@ -28,7 +28,6 @@ public class ScannerImpl implements Scanner {
     private Map<Integer, AbstractLexer> lexerPrecedenceMap;
     private LexerProvider provider;
 
-//    todo, hacer que el code source venga del metodo de leer desde el filename
     public ScannerImpl(String fileName, Map<Integer, AbstractLexer> lexerPrecedenceMap,
                        TokenFactory tokenFactory, SourceReader sourceReader) throws IOException {
         this.sourceReader = sourceReader;

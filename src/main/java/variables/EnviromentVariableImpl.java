@@ -11,7 +11,6 @@ public class EnviromentVariableImpl implements EnviromentVariable {
     private EnviromentVariable outside;
 
 
-//    todo ver cual no uso
     public EnviromentVariableImpl() {
         this.variablesMap = new HashMap<>();
         this.outside = null;
@@ -20,16 +19,6 @@ public class EnviromentVariableImpl implements EnviromentVariable {
     public EnviromentVariableImpl(EnviromentVariable outside) {
         this.variablesMap = new HashMap<>();
         this.outside = outside;
-    }
-
-    public EnviromentVariableImpl(HashMap<String, Variable> variablesMap, EnviromentVariable inside) {
-        this.variablesMap = variablesMap;
-        this.outside = outside;
-    }
-
-    public EnviromentVariableImpl(HashMap<String, Variable> variablesMap) {
-        this.variablesMap = variablesMap;
-        this.outside = null;
     }
 
     @Override
