@@ -1,9 +1,14 @@
 import errors.LexerError;
 import errors.ParserError;
-import expressions.Expression;
+import parser.statementsParser.ImportParser;
+import parser.statementsParser.PrintParser;
+import parser.statementsParser.StatementParser;
+import parser.statementsParser.VariableParser;
+import parser.statementsParser.expressionsParser.ExpressionParser;
+import statement.Statement;
+import statement.expression.Expression;
 import parser.ParserImpl;
-import parser.expressionsParser.*;
-import parser.expressionsParser.types.*;
+import parser.statementsParser.expressionsParser.types.*;
 import scanner.LexerProvider;
 import scanner.lexer.*;
 import org.junit.Test;
@@ -13,7 +18,6 @@ import token.Token;
 import token.factory.TokenFactoryImpl;
 import token.TokenType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class ParserTests {
         keywords.put("const",   TokenType.CONST);
         keywords.put("import",  TokenType.IMPORT);
         keywords.put("let",     TokenType.LET);
-        keywords.put("println", TokenType.PRINTLN);
+        keywords.put("print", TokenType.PRINT);
         return keywords;
     }
 
@@ -61,21 +65,31 @@ public class ParserTests {
         booleanWords.put("false",   TokenType.FALSE);
         booleanWords.put("if",      TokenType.IF);
         booleanWords.put("true",    TokenType.TRUE);
+        booleanWords.put("boolean", TokenType.BOOLEAN);
         return booleanWords;
     }
 
-    private Map<Integer, ExpressionParser> expressionParserMap = getExpressionParserMap();
-    private Map<Integer, ExpressionParser> getExpressionParserMap() {
-        HashMap<Integer, ExpressionParser> expressionsParserMap = new HashMap<>();
+    private Map<Integer, AbstractExpressionParser> expressionParserMap = getExpressionParserMap();
+    private Map<Integer, AbstractExpressionParser> getExpressionParserMap() {
+        HashMap<Integer, AbstractExpressionParser> expressionsParserMap = new HashMap<>();
 //        expressionsParserMap.put(6, new GroupingParser());
         expressionsParserMap.put(1, new ComparisonParser());
         expressionsParserMap.put(2, new AdditionParser());
         expressionsParserMap.put(3, new MultiplicationParser());
-        expressionsParserMap.put(4, new UnaryParser());
+//        expressionsParserMap.put(4, new UnaryParser());
         expressionsParserMap.put(5, new PrimaryParser());
         return expressionsParserMap;
     }
 
+    private Map<Integer, StatementParser> statementParserMap = getStatementParserMap();
+    private Map<Integer, StatementParser> getStatementParserMap() {
+        HashMap<Integer, StatementParser> statementParserMap = new HashMap<>();
+        statementParserMap.put(1, new ImportParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(2, new PrintParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(3, new VariableParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(5, new ExpressionParser(expressionParserMap));
+        return statementParserMap;
+    }
 
 //    todo - unary ?
 //    todo  ()
@@ -98,9 +112,9 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        Expression expression = expressionStream.collect(Collectors.toList()).get(0);
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        List<Statement> statements = statementStream.collect(Collectors.toList());
 
 //        todo assert? maybe print tree?
     }
@@ -124,8 +138,8 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
     }
 
     @Test(expected = ParserError.class)
@@ -147,8 +161,8 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
     }
 
     @Test(expected = ParserError.class)
@@ -170,8 +184,8 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
     }
 
     @Test
@@ -193,9 +207,9 @@ public class ParserTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        List<Statement> statements = statementStream.collect(Collectors.toList());
 
 //        todo assert? maybe print tree?
     }

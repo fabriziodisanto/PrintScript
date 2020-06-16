@@ -1,12 +1,14 @@
-import data.values.DataTypeValue;
 import errors.*;
-import expressions.Expression;
-import expressions.types.BinaryExpression;
+import parser.statementsParser.ImportParser;
+import parser.statementsParser.PrintParser;
+import parser.statementsParser.StatementParser;
+import parser.statementsParser.VariableParser;
+import parser.statementsParser.expressionsParser.ExpressionParser;
+import statement.Statement;
 import interpreter.Interpreter;
 import interpreter.InterpreterImpl;
 import parser.ParserImpl;
-import parser.expressionsParser.*;
-import parser.expressionsParser.types.*;
+import parser.statementsParser.expressionsParser.types.*;
 import scanner.LexerProvider;
 import scanner.lexer.*;
 import org.junit.Test;
@@ -17,12 +19,9 @@ import token.factory.TokenFactoryImpl;
 import token.TokenType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
 
 public class InterpreterTests {
 
@@ -32,7 +31,7 @@ public class InterpreterTests {
         keywords.put("const",   TokenType.CONST);
         keywords.put("import",  TokenType.IMPORT);
         keywords.put("let",     TokenType.LET);
-        keywords.put("println", TokenType.PRINTLN);
+        keywords.put("print", TokenType.PRINT);
         return keywords;
     }
 
@@ -65,19 +64,31 @@ public class InterpreterTests {
         booleanWords.put("false",   TokenType.FALSE);
         booleanWords.put("if",      TokenType.IF);
         booleanWords.put("true",    TokenType.TRUE);
+        booleanWords.put("boolean", TokenType.BOOLEAN);
         return booleanWords;
     }
 
-    private Map<Integer, ExpressionParser> expressionParserMap = getExpressionParserMap();
-    private Map<Integer, ExpressionParser> getExpressionParserMap() {
-        HashMap<Integer, ExpressionParser> expressionsParserMap = new HashMap<>();
+
+    private Map<Integer, AbstractExpressionParser> expressionParserMap = getExpressionParserMap();
+    private Map<Integer, AbstractExpressionParser> getExpressionParserMap() {
+        HashMap<Integer, AbstractExpressionParser> expressionsParserMap = new HashMap<>();
 //        expressionsParserMap.put(6, new GroupingParser());
         expressionsParserMap.put(1, new ComparisonParser());
         expressionsParserMap.put(2, new AdditionParser());
         expressionsParserMap.put(3, new MultiplicationParser());
-        expressionsParserMap.put(4, new UnaryParser());
+//        expressionsParserMap.put(4, new UnaryParser());
         expressionsParserMap.put(5, new PrimaryParser());
         return expressionsParserMap;
+    }
+
+    private Map<Integer, StatementParser> statementParserMap = getStatementParserMap();
+    private Map<Integer, StatementParser> getStatementParserMap() {
+        HashMap<Integer, StatementParser> statementParserMap = new HashMap<>();
+        statementParserMap.put(1, new ImportParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(2, new PrintParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(3, new VariableParser(new ExpressionParser(expressionParserMap)));
+        statementParserMap.put(5, new ExpressionParser(expressionParserMap));
+        return statementParserMap;
     }
 
     @Test(expected = InterpreterError.class)
@@ -99,17 +110,16 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        Expression expression = expressionStream.collect(Collectors.toList()).get(0);
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
         Interpreter interpreter = new InterpreterImpl();
-        interpreter.visitBinaryExpression((BinaryExpression) expression);
+        interpreter.interpret(statementStream);
     }
 
     @Test
     public void test002_interpretMathSumWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("5 + 4 - 32; 37 + 19;");
+        StringBuffer stringBuffer = new StringBuffer("print(5 + 4 - 32); print(37 + 19);");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -126,24 +136,23 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
-        Expression expression = expressionList.get(0);
-        Expression expression2 = expressionList.get(1);
 
         Interpreter interpreter = new InterpreterImpl();
-        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-        DataTypeValue result2 = interpreter.visitBinaryExpression((BinaryExpression) expression2);
-
-        assertEquals(-23.0, result.getValue());
-        assertEquals(56.0, result2.getValue());
+        interpreter.interpret(statementStream);
+//        todo assert
+//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
+//        DataTypeValue result2 = interpreter.visitBinaryExpression((BinaryExpression) expression2);
+//
+//        assertEquals(-23.0, result.getValue());
+//        assertEquals(56.0, result2.getValue());
     }
 
     @Test
     public void test003_interpretMathMultiplyWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("5 * 4 / 2;");
+        StringBuffer stringBuffer = new StringBuffer("print(5 * 4 / 2);");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -160,19 +169,19 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
-        Expression expression = expressionList.get(0);
         Interpreter interpreter = new InterpreterImpl();
-        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-        assertEquals(10.0, result.getValue());
+        interpreter.interpret(statementStream);
+//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
+//        assertEquals(10.0, result.getValue());
+//        todo assert
     }
 
     @Test
     public void test004_interpretComparisonWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("5 > 4 / 2;");
+        StringBuffer stringBuffer = new StringBuffer("print(5 > 4 / 2);");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -189,19 +198,22 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
-        Expression expression = expressionList.get(0);
         Interpreter interpreter = new InterpreterImpl();
-        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-        assertEquals(true, result.getValue());
+        interpreter.interpret(statementStream);
+
+//        Expression expression = expressionList.get(0);
+//        Interpreter interpreter = new InterpreterImpl();
+//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
+//        assertEquals(true, result.getValue());
+//        todo assert
     }
 
     @Test
     public void test005_interpretComparisonEqualWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("5 <= 4 / 2 + 3;");
+        StringBuffer stringBuffer = new StringBuffer("print(5 <= 4 / 2 + 3);");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -218,19 +230,21 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
-        Expression expression = expressionList.get(0);
         Interpreter interpreter = new InterpreterImpl();
-        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-        assertEquals(true, result.getValue());
+        interpreter.interpret(statementStream);
+
+//        Expression expression = expressionList.get(0);
+//        Interpreter interpreter = new InterpreterImpl();
+//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
+//        assertEquals(true, result.getValue());
     }
 
     @Test
     public void test005_interpretStringAppendWorks() throws LexerError, ParserError, InterpreterError {
-        StringBuffer stringBuffer = new StringBuffer("\"hola \" + \"que tal \" + 43;");
+        StringBuffer stringBuffer = new StringBuffer("print(\"hola \" + \"que tal \" + 43);");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -247,13 +261,16 @@ public class InterpreterTests {
         Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl(), new LexerProvider(lexersPrecedenceMap));
         Stream<Token> tokens = scanner.analyze();
 
-        ParserImpl parser = new ParserImpl(tokens, expressionParserMap);
-        Stream<Expression> expressionStream = parser.analyze();
-        List<Expression> expressionList = expressionStream.collect(Collectors.toList());
+        ParserImpl parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
 
-        Expression expression = expressionList.get(0);
         Interpreter interpreter = new InterpreterImpl();
-        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
-        assertEquals("hola que tal 43.0", result.getValue());
+        interpreter.interpret(statementStream);
+//
+//        Expression expression = expressionList.get(0);
+//        Interpreter interpreter = new InterpreterImpl();
+//        DataTypeValue result = interpreter.visitBinaryExpression((BinaryExpression) expression);
+//        assertEquals("hola que tal 43.0", result.getValue());
+//        todo assert
     }
 }

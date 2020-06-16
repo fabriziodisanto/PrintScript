@@ -27,7 +27,7 @@ public class ScannerTests {
         keywords.put("const",   TokenType.CONST);
         keywords.put("import",  TokenType.IMPORT);
         keywords.put("let",     TokenType.LET);
-        keywords.put("println", TokenType.PRINTLN);
+        keywords.put("print", TokenType.PRINT);
         return keywords;
     }
 
@@ -60,6 +60,7 @@ public class ScannerTests {
         booleanWords.put("false",   TokenType.FALSE);
         booleanWords.put("if",      TokenType.IF);
         booleanWords.put("true",    TokenType.TRUE);
+        booleanWords.put("boolean", TokenType.BOOLEAN);
         return booleanWords;
     }
 
@@ -72,7 +73,7 @@ public class ScannerTests {
 
     @Test
     public void test001_scanExampleCodeSource() throws LexerError {
-        StringBuffer stringBuffer = new StringBuffer("let variable = 5 * 4;\nprintln variable");
+        StringBuffer stringBuffer = new StringBuffer("let variable = 5 * 4;\nprint variable");
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
@@ -95,7 +96,7 @@ public class ScannerTests {
         indexAndTokenTypeMap.put(4, TokenType.STAR);
         indexAndTokenTypeMap.put(5, TokenType.NUMBER);
         indexAndTokenTypeMap.put(6, TokenType.SEMICOLON);
-        indexAndTokenTypeMap.put(7, TokenType.PRINTLN);
+        indexAndTokenTypeMap.put(7, TokenType.PRINT);
         indexAndTokenTypeMap.put(8, TokenType.IDENTIFIER);
         indexAndTokenTypeMap.put(9, TokenType.EOF);
         assertTokenType(tokens, indexAndTokenTypeMap);

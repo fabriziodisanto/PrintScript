@@ -1,6 +1,12 @@
 package interpreter;
 
-import expressions.ExpressionVisitor;
+import errors.InterpreterError;
+import statement.Statement;
+import statement.expression.ExpressionVisitor;
 
-public interface Interpreter<T> extends ExpressionVisitor<T> {
+import java.util.stream.Stream;
+
+public interface Interpreter extends ExpressionVisitor {
+
+    void interpret(Stream<Statement> statements) throws InterpreterError;
 }
