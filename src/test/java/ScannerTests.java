@@ -1,4 +1,6 @@
+import cli.Utils;
 import errors.LexerError;
+import parser.statementsParser.StatementParser;
 import scanner.LexerProvider;
 import scanner.lexer.*;
 import org.junit.Before;
@@ -20,50 +22,9 @@ public class ScannerTests {
 
     private Map<Integer, TokenType> indexAndTokenTypeMap;
     private Map<Integer, Integer[]> indexAndTokenPositionsMap;
-
-    private Map<String, TokenType> keywords = getKeywords();
-    private Map<String, TokenType> getKeywords() {
-        HashMap<String, TokenType> keywords = new HashMap<>();
-        keywords.put("const",   TokenType.CONST);
-        keywords.put("import",  TokenType.IMPORT);
-        keywords.put("let",     TokenType.LET);
-        keywords.put("print", TokenType.PRINT);
-        return keywords;
-    }
-
-    private Map<String, TokenType> specialChars = getSpecialChars();
-    private Map<String, TokenType> getSpecialChars() {
-        HashMap<String, TokenType> specialChars = new HashMap<>();
-        specialChars.put("{", TokenType.LEFT_BRACE);
-        specialChars.put("}", TokenType.RIGHT_BRACE);
-        specialChars.put("(", TokenType.LEFT_PAREN);
-        specialChars.put(")", TokenType.RIGHT_PAREN);
-        specialChars.put(".", TokenType.DOT);
-        specialChars.put("-", TokenType.MINUS);
-        specialChars.put("+", TokenType.PLUS);
-        specialChars.put(";", TokenType.SEMICOLON);
-        specialChars.put("*", TokenType.STAR);
-        specialChars.put("/", TokenType.SLASH);
-        specialChars.put("=", TokenType.EQUAL);
-        specialChars.put(":", TokenType.COLON);
-        specialChars.put("<", TokenType.LESS);
-        specialChars.put(">", TokenType.GREATER);
-        specialChars.put("<=", TokenType.LESS_EQUAL);
-        specialChars.put(">=", TokenType.GREATER_EQUAL);
-        return specialChars;
-    }
-
-    private Map<String, TokenType> booleanWords = getBooleanWords();
-    private Map<String, TokenType> getBooleanWords() {
-        HashMap<String, TokenType> booleanWords = new HashMap<>();
-        booleanWords.put("else",    TokenType.ELSE);
-        booleanWords.put("false",   TokenType.FALSE);
-        booleanWords.put("if",      TokenType.IF);
-        booleanWords.put("true",    TokenType.TRUE);
-        booleanWords.put("boolean", TokenType.BOOLEAN);
-        return booleanWords;
-    }
-
+    private Map<String, TokenType> keywords = Utils.getKeywords();
+    private Map<String, TokenType> specialChars = Utils.getSpecialChars();
+    private Map<String, TokenType> booleanWords = Utils.getBooleanWords();
 
     @Before
     public void setUpTests(){
@@ -135,6 +96,7 @@ public class ScannerTests {
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        keywords.put("const", TokenType.CONST);
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
@@ -206,6 +168,7 @@ public class ScannerTests {
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        keywords.put("const", TokenType.CONST);
         IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
         SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
 
