@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//        todo asserts? maybe print tree?
+import static org.junit.Assert.assertEquals;
+
 public class ParserTests {
 
     private Map<String, TokenType> keywords = Utils.getKeywords();
@@ -55,6 +56,7 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
+        assertEquals(statements.size(), 1);
     }
 
     @Test(expected = ParserError.class)
@@ -126,6 +128,7 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
+        assertEquals(statements.size(), 2);
     }
 
     @Test
@@ -150,6 +153,7 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
+        assertEquals(statements.size(), 1);
     }
 
     @Test
@@ -174,6 +178,7 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
+        assertEquals(statements.size(), 1);
     }
 
     @Test
@@ -198,6 +203,7 @@ public class ParserTests {
         Parser parser = new ParserImpl(tokens, statementParserMap);
         Stream<Statement> statementStream = parser.analyze();
         List<Statement> statements = statementStream.collect(Collectors.toList());
+        assertEquals(statements.size(), 2);
     }
 
 //    todo a = a + b falla

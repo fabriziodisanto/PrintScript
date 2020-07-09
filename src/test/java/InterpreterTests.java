@@ -23,7 +23,6 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
-//        todo assert?
 public class InterpreterTests {
 
     private Map<String, TokenType> keywords = Utils.getKeywords();
@@ -31,10 +30,10 @@ public class InterpreterTests {
     private Map<String, TokenType> booleanWords = Utils.getBooleanWords();
     private Map<Integer, StatementParser> statementParserMap = Utils.getStatementParserMap(true);
 
-
     @Test(expected = InterpreterError.class)
     public void test001_interpretInvalidCodeSourceFails() throws LexerError, ParserError, InterpreterError, VariableError {
         StringBuffer stringBuffer = new StringBuffer("5 * 4 + false >= 63;");
+//        esto no es del tests, llevarlo afuera
         StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
         NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
         BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
