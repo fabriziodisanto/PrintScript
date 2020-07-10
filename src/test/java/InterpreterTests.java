@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class InterpreterTests {
 
@@ -323,6 +323,110 @@ public class InterpreterTests {
         Stream<Statement> statementStream = parser.analyze();
         InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
         interpreter.interpret(statementStream);
+    }
+
+    @Test
+    public void test010_interpretIfStatement() throws LexerError, ParserError, InterpreterError, VariableError {
+        StringBuffer stringBuffer = new StringBuffer("if (5 > 2) { print(\"Hola chavales\"); };");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        Parser parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("Hola chavales", values.get(0).getValue());
+    }
+
+    @Test
+    public void test011_interpretIfStatement() throws LexerError, ParserError, InterpreterError, VariableError {
+        StringBuffer stringBuffer = new StringBuffer("if (5 < 2) { print(\"Hola chavales\"); };");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        Parser parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertNull(values.get(0));
+    }
+
+    @Test
+    public void test012_interpretIfElseStatement() throws LexerError, ParserError, InterpreterError, VariableError {
+        StringBuffer stringBuffer = new StringBuffer("if (5 < 2) { print(\"True\");} else {print(\"False\");};");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        Parser parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("False", values.get(0).getValue());
+    }
+
+    @Test
+    public void test013_interpretIfElseStatement() throws LexerError, ParserError, InterpreterError, VariableError {
+        StringBuffer stringBuffer = new StringBuffer("if (5 > 2) { print(\"True\");} else {print(\"False\");};");
+        StringLexer stringLexer = new StringLexer(stringBuffer, new TokenFactoryImpl());
+        NumberLexer numberLexer = new NumberLexer(stringBuffer, new TokenFactoryImpl());
+        BooleanLexer booleanLexer = new BooleanLexer(stringBuffer, new TokenFactoryImpl(), booleanWords);
+        IdentifierAndKeywordsLexer identifierAndKeywordsLexer = new IdentifierAndKeywordsLexer(stringBuffer, new TokenFactoryImpl(), keywords);
+        SpecialCharactersLexer specialCharactersLexer = new SpecialCharactersLexer(stringBuffer, new TokenFactoryImpl(), specialChars);
+
+        HashMap<Integer, AbstractLexer> lexersPrecedenceMap = new HashMap<>();
+        lexersPrecedenceMap.put(1, booleanLexer);
+        lexersPrecedenceMap.put(2, identifierAndKeywordsLexer);
+        lexersPrecedenceMap.put(3, numberLexer);
+        lexersPrecedenceMap.put(4, specialCharactersLexer);
+        lexersPrecedenceMap.put(5, stringLexer);
+
+        Scanner scanner = new ScannerImpl("textFile", stringBuffer, lexersPrecedenceMap, new TokenFactoryImpl());
+        Stream<Token> tokens = scanner.analyze();
+
+        Parser parser = new ParserImpl(tokens, statementParserMap);
+        Stream<Statement> statementStream = parser.analyze();
+        InterpreterImpl interpreter = new InterpreterImpl(new EnviromentVariableImpl());
+        List<DataTypeValue> values = interpreter.interpret(statementStream);
+        assertEquals("True", values.get(0).getValue());
     }
 
     private HashMap<Integer, AbstractLexer> getLexerPrecedenceMap(StringLexer stringLexer, NumberLexer numberLexer, BooleanLexer booleanLexer, IdentifierAndKeywordsLexer identifierAndKeywordsLexer, SpecialCharactersLexer specialCharactersLexer) {

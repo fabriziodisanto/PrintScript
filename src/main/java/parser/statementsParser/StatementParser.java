@@ -20,7 +20,7 @@ public abstract class StatementParser {
         return tokenTypeList;
     }
 
-    public abstract boolean matchThisTokens(List<Token> tokens);
+    public abstract boolean matchThisTokens(List<Token> tokens) throws ParserError;
 
     Token getTokenAfterThisTokenType(TokenType tokenType, List<Token> tokens) throws ParserError {
         int i = 0;
@@ -31,7 +31,7 @@ public abstract class StatementParser {
         return tokens.get(++i);
     }
 
-    List<Token> getTokensBetweenThisTwo(List<Token> tokens, TokenType left, TokenType right) throws ParserError {
+    public List<Token> getTokensBetweenThisTwo(List<Token> tokens, TokenType left, TokenType right) throws ParserError {
         int leftIndex = -1;
         int rightIndex = -1;
         for (int i = 0; i < tokens.size(); i++) {
@@ -42,12 +42,6 @@ public abstract class StatementParser {
         return tokens.subList(leftIndex + 1, rightIndex);
     }
 
-    boolean containsAllTheseTokensTypes(List<Token> tokens, ArrayList<TokenType> tokenTypes) {
-        for (TokenType type : tokenTypes) {
-            if(!containsThisTokenType(tokens, type)) return false;
-        }
-        return true;
-    }
 
     boolean containsThisTokenType(List<Token> tokens, TokenType type) {
         for (Token token : tokens) {

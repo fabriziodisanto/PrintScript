@@ -15,6 +15,7 @@ import statement.blockStatement.BlockStatement;
 import statement.expression.Expression;
 import statement.expression.types.*;
 import interpreter.binaryInterpreter.*;
+import statement.ifStatement.IfElseStatement;
 import statement.ifStatement.IfStatement;
 import statement.importStatement.ImportStatement;
 import statement.printStatement.PrintStatement;
@@ -50,8 +51,24 @@ public class InterpreterImpl implements Interpreter {
     }
 
     @Override
-    public DataTypeValue visitIfStatement(IfStatement ifStatement) {
-//        todo implement
+    public DataTypeValue visitIfStatement(IfStatement ifStatement) throws InterpreterError, VariableError {
+        DataTypeValue condition = evaluate(ifStatement.getCondition());
+        if (condition.getType() == BooleanType.getInstance() && (boolean) condition.getValue()){
+            return this.execute(ifStatement.getTrueStatement());
+        }
+        return null;
+    }
+
+    @Override
+    public DataTypeValue visitIfElseStatement(IfElseStatement ifElseStatement) throws InterpreterError, VariableError {
+        DataTypeValue condition = evaluate(ifElseStatement.getCondition());
+        if (condition.getType() == BooleanType.getInstance()) {
+            if ((boolean) condition.getValue()){
+                return this.execute(ifElseStatement.getTrueStatement());
+            }else{
+                return this.execute(ifElseStatement.getFalseStatement());
+            }
+        }
         return null;
     }
 

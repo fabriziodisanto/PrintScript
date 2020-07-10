@@ -1,9 +1,7 @@
 package cli;
 
-import parser.statementsParser.ImportParser;
-import parser.statementsParser.PrintParser;
-import parser.statementsParser.StatementParser;
-import parser.statementsParser.VariableDeclarationParser;
+import parser.ParserImpl;
+import parser.statementsParser.*;
 import parser.statementsParser.expressionsParser.ExpressionParser;
 import parser.statementsParser.expressionsParser.types.*;
 import token.TokenType;
@@ -73,8 +71,18 @@ public class Utils {
         HashMap<Integer, StatementParser> statementParserMap = new HashMap<>();
         statementParserMap.put(1, new ImportParser(new ExpressionParser(expressionParserMap)));
         statementParserMap.put(2, new PrintParser(new ExpressionParser(expressionParserMap)));
-        statementParserMap.put(3, new VariableDeclarationParser(new ExpressionParser(expressionParserMap), hasBooleans));
-        statementParserMap.put(5, new ExpressionParser(expressionParserMap));
+        if(hasBooleans) {
+            statementParserMap.put(
+                    3,
+                    new IfElseParser(new ExpressionParser(expressionParserMap),
+                            new ParserImpl(null, getStatementParserMap(false))));
+            statementParserMap.put(
+                    4,
+                    new IfParser(new ExpressionParser(expressionParserMap),
+                                 new ParserImpl(null, getStatementParserMap(false))));
+        }
+        statementParserMap.put(5, new VariableDeclarationParser(new ExpressionParser(expressionParserMap), hasBooleans));
+        statementParserMap.put(6, new ExpressionParser(expressionParserMap));
         return statementParserMap;
     }
 
